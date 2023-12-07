@@ -2,7 +2,7 @@
 import {
   ArrowRightOnRectangleIcon,
   WalletIcon,
-} from "@heroicons/react/24/outline";
+} from "@heroicons/react/24/solid";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 import { useAccount, useEnsName } from "wagmi";
@@ -21,7 +21,7 @@ export default function ConnectButton() {
     <>
       {isConnected ? (
         <button
-          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black"
+          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black font-semibold"
           onClick={() => open()}
         >
           <span className="hidden md:block">
@@ -34,7 +34,7 @@ export default function ConnectButton() {
         </button>
       ) : (
         <button
-          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black"
+          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black font-semibold"
           onClick={() => open()}
         >
           <WalletIcon className="w-5 h-5" />
