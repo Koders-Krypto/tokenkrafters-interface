@@ -34,10 +34,12 @@ export default function ConnectButton() {
         </button>
       ) : (
         <button
-          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black font-semibold"
+          className="flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-full shadow-sm bg-primary text-black font-semibold truncate"
           onClick={() => open()}
         >
-          <WalletIcon className="w-5 h-5" />
+          <div className="h-5 w-5">
+            <WalletIcon className="w-5 h-5" />
+          </div>
           Connect Wallet
         </button>
       )}
