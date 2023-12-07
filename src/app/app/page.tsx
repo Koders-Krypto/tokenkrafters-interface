@@ -18,9 +18,10 @@ import { Dialog, Listbox, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
 export default function Page() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [tokens, setTokens] = useState(Tokens);
   const [selected, setSelected] = useState(Tokens[0]);
+  const [selectedTokens, setSelectedTokens] = useState<any>([]);
 
   return (
     <div className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
@@ -102,7 +103,7 @@ export default function Page() {
               </div>
             </div>
             <div className="flex flex-row justify-start items-center gap-2">
-              {Tokens.map((token, i) => {
+              {tokens.map((token, i) => {
                 return (
                   <Image
                     key={i}
@@ -164,7 +165,15 @@ export default function Page() {
                     ></textarea>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={setSelected}>
+                    <Listbox value={selected} onChange={(token) => {
+                      setSelectedTokens([...selectedTokens, token]);
+                      let _tokens = tokens;
+                      const index = _tokens.indexOf(token);
+                      if (index > -1) {
+                        _tokens.splice(index, 1);
+                      }
+                      setTokens([..._tokens]);
+                    }}>
                       <div className="relative">
                         <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
                           <Image
@@ -190,14 +199,13 @@ export default function Page() {
                           leaveTo="opacity-0"
                         >
                           <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {Tokens.map((token: any, i) => (
+                            {tokens.map((token: any, i) => (
                               <Listbox.Option
                                 key={i}
                                 className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${
-                                    active
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-gray-900"
+                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${active
+                                    ? "bg-primary/10 text-primary"
+                                    : "text-gray-900"
                                   }`
                                 }
                                 value={token}
@@ -205,9 +213,8 @@ export default function Page() {
                                 {({ selected }) => (
                                   <>
                                     <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
+                                      className={`flex flex-row justify-center items-center gap-2 truncate ${selected ? "font-medium" : "font-normal"
+                                        }`}
                                     >
                                       <Image
                                         src={token.icon}
@@ -225,279 +232,15 @@ export default function Page() {
                         </Transition>
                       </div>
                     </Listbox>
-                    <input
-                      className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder="% of the bucket"
-                    />
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={setSelected}>
-                      <div className="relative">
-                        <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
-                          <Image
-                            src={selected.icon}
-                            alt={selected.name}
-                            height={"25"}
-                            width={"25"}
-                          />
-                          <span className="block truncate">
-                            {selected?.name}
-                          </span>
-                          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-secondary"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {Tokens.map((token: any, i) => (
-                              <Listbox.Option
-                                key={i}
-                                className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${
-                                    active
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={token}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      <Image
-                                        src={token.icon}
-                                        alt={token.name}
-                                        height={"20"}
-                                        width={"20"}
-                                      />
-                                      {token.name}
-                                    </span>
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
+                  {selectedTokens.map((token: any, i: any) => (
                     <input
+                      key={i}
+                      type="number"
                       className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder="% of the bucket"
+                      placeholder={`${token.name} % of the bucket`}
                     />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={setSelected}>
-                      <div className="relative">
-                        <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
-                          <Image
-                            src={selected.icon}
-                            alt={selected.name}
-                            height={"25"}
-                            width={"25"}
-                          />
-                          <span className="block truncate">
-                            {selected?.name}
-                          </span>
-                          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-secondary"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {Tokens.map((token: any, i) => (
-                              <Listbox.Option
-                                key={i}
-                                className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${
-                                    active
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={token}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      <Image
-                                        src={token.icon}
-                                        alt={token.name}
-                                        height={"20"}
-                                        width={"20"}
-                                      />
-                                      {token.name}
-                                    </span>
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
-                    <input
-                      className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder="% of the bucket"
-                    />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={setSelected}>
-                      <div className="relative">
-                        <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
-                          <Image
-                            src={selected.icon}
-                            alt={selected.name}
-                            height={"25"}
-                            width={"25"}
-                          />
-                          <span className="block truncate">
-                            {selected?.name}
-                          </span>
-                          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-secondary"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {Tokens.map((token: any, i) => (
-                              <Listbox.Option
-                                key={i}
-                                className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${
-                                    active
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={token}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      <Image
-                                        src={token.icon}
-                                        alt={token.name}
-                                        height={"20"}
-                                        width={"20"}
-                                      />
-                                      {token.name}
-                                    </span>
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
-                    <input
-                      className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder="% of the bucket"
-                    />
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={setSelected}>
-                      <div className="relative">
-                        <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
-                          <Image
-                            src={selected.icon}
-                            alt={selected.name}
-                            height={"25"}
-                            width={"25"}
-                          />
-                          <span className="block truncate">
-                            {selected?.name}
-                          </span>
-                          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-secondary"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {Tokens.map((token: any, i) => (
-                              <Listbox.Option
-                                key={i}
-                                className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${
-                                    active
-                                      ? "bg-primary/10 text-primary"
-                                      : "text-gray-900"
-                                  }`
-                                }
-                                value={token}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${
-                                        selected ? "font-medium" : "font-normal"
-                                      }`}
-                                    >
-                                      <Image
-                                        src={token.icon}
-                                        alt={token.name}
-                                        height={"20"}
-                                        width={"20"}
-                                      />
-                                      {token.name}
-                                    </span>
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
-                      </div>
-                    </Listbox>
-                    <input
-                      className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder="% of the bucket"
-                    />
-                  </div>
+                  ))}
 
                   <div className="flex justify-end items-center">
                     <button className="flex flex-row gap-1 text-white py-1 px-2 text-sm rounded-md shadow-sm bg-secondary">
