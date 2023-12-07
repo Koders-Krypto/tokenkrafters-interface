@@ -12,6 +12,10 @@
         "logo": "/supported-chains/Celo.svg"
     },
     {
+        "name": "Linea",
+        "logo": "/supported-chains/Linea.svg"
+    },
+    {
         "name": "Mantle",
         "logo": "/supported-chains/Mantle.svg"
     },

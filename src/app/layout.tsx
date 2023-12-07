@@ -3,6 +3,7 @@ import { Jost } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
+import { Providers } from "./components/providers";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -20,8 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={jost.className + " hero-background"}>
-        <Navbar />
-        {children}
+        <Providers>
+          {" "}
+          <Navbar />
+          {children}
+        </Providers>
         <Footer />
       </body>
     </html>

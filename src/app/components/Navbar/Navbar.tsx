@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { usePathname } from "next/navigation";
+import ConnectButton from "../ConnectButton/ConnectButton";
 
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
@@ -38,7 +39,7 @@ const Navbar = () => {
               : "fixed z-20 flex w-full flex-col items-center justify-between px-6 py-4 lg:px-24"
           }
         >
-          <div className="flex flex-row justify-between items-center w-full">
+          <div className="grid grid-cols-2 gap-4 place-content-between w-full">
             <Link
               className="flex flex-row justify-start items-center gap-2"
               href={"/"}
@@ -50,7 +51,9 @@ const Navbar = () => {
                 width={"250"}
               />
             </Link>
-            <div></div>
+            <div className="flex justify-end items-center">
+              <ConnectButton />
+            </div>
           </div>
         </div>
       </div>
