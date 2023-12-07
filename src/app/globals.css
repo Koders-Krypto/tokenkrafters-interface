@@ -25,3 +25,18 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+/* .hero-background {
+  background: linear-gradient(180deg, #160141 -47.15%, #390090 93.17%);
+} */
+.hero-background {
+  background: radial-gradient(
+    129.33% 86.22% at 86.74% 99.6%,
+    #2f3c9e 0%,
+    #253084 12%,
+    #192264 30%,
+    #10194d 47%,
+    #0b133f 63%,
+    #0a113b 78%,
+    #000020 100%
+  );
+}

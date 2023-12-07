@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Arbitrum",
+        "logo": "/supported-chains/Arbitrum.svg"
+    },
+    {
+        "name": "BASE",
+        "logo": "/supported-chains/BASE.svg"
+    },
+    {
+        "name": "Celo",
+        "logo": "/supported-chains/Celo.svg"
+    },
+    {
+        "name": "Mantle",
+        "logo": "/supported-chains/Mantle.svg"
+    },
+    {
+        "name": "OKX",
+        "logo": "/supported-chains/OKX.svg"
+    },
+    {
+        "name": "Polygon",
+        "logo": "/supported-chains/Polygon.svg"
+    },
+    {
+        "name": "Zkscroll",
+        "logo": "/supported-chains/Zkscroll.svg"
+    }
+]
