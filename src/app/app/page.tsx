@@ -10,6 +10,7 @@ import {
   PlusIcon,
   ScaleIcon,
   Square3Stack3DIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 import { Tokens } from "../components/constants/tokens";
 import Image from "next/image";
@@ -142,7 +143,7 @@ export default function Page() {
             {/* Container to center the panel */}
             <div className="flex min-h-full items-center justify-center p-4">
               {/* The actual dialog panel  */}
-              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg bg-white px-6 py-4">
+              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg bg-white p-6">
                 <Dialog.Title className={"text-2xl font-semibold"}>
                   Create your own bucket
                 </Dialog.Title>
@@ -164,8 +165,9 @@ export default function Page() {
                       rows={5}
                     ></textarea>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Listbox value={selected} onChange={(token) => {
+                  <Listbox
+                    value={selected}
+                    onChange={(token) => {
                       setSelectedTokens([...selectedTokens, token]);
                       let _tokens = tokens;
                       const index = _tokens.indexOf(token);
@@ -173,82 +175,67 @@ export default function Page() {
                         _tokens.splice(index, 1);
                       }
                       setTokens([..._tokens]);
-                    }}>
-                      <div className="relative">
-                        <Listbox.Button className="relative flex flex-row border border-secondary justify-center items-center gap-1 w-full cursor-default rounded-lg bg-white py-1.5 pl-3 pr-4 text-left shadow-mdxw">
-                          <Image
-                            src={selected.icon}
-                            alt={selected.name}
-                            height={"25"}
-                            width={"25"}
-                          />
-                          <span className="block truncate">
-                            {selected?.name}
-                          </span>
-                          <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-secondary"
-                              aria-hidden="true"
-                            />
-                          </span>
-                        </Listbox.Button>
-                        <Transition
-                          as={Fragment}
-                          leave="transition ease-in duration-100"
-                          leaveFrom="opacity-100"
-                          leaveTo="opacity-0"
-                        >
-                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md z-50 bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {tokens.map((token: any, i) => (
-                              <Listbox.Option
-                                key={i}
-                                className={({ active }) =>
-                                  `relative flex flex-row justify-start items-start cursor-default select-none py-2 px-6 ${active
-                                    ? "bg-primary/10 text-primary"
-                                    : "text-gray-900"
-                                  }`
+                    }}
+                  >
+                    <div className="flex flex-col gap-1 relative w-full">
+                      <label htmlFor="">Select Token</label>
+                      <div className="flex flex-row gap-4 justify-start items-center">
+                        {tokens.map((token: any, i) => {
+                          return (
+                            <div
+                              key={i}
+                              className="bg-primary text-secondary px-2 py-0.5 text-sm rounded-full shadow-md"
+                              onClick={() => {
+                                setSelectedTokens([...selectedTokens, token]);
+                                let _tokens = tokens;
+                                const index = _tokens.indexOf(token);
+                                if (index > -1) {
+                                  _tokens.splice(index, 1);
                                 }
-                                value={token}
-                              >
-                                {({ selected }) => (
-                                  <>
-                                    <span
-                                      className={`flex flex-row justify-center items-center gap-2 truncate ${selected ? "font-medium" : "font-normal"
-                                        }`}
-                                    >
-                                      <Image
-                                        src={token.icon}
-                                        alt={token.name}
-                                        height={"20"}
-                                        width={"20"}
-                                      />
-                                      {token.name}
-                                    </span>
-                                  </>
-                                )}
-                              </Listbox.Option>
-                            ))}
-                          </Listbox.Options>
-                        </Transition>
+                                setTokens([..._tokens]);
+                              }}
+                            >
+                              {token.name}
+                            </div>
+                          );
+                        })}
                       </div>
-                    </Listbox>
-                  </div>
+                    </div>
+                  </Listbox>
                   {selectedTokens.map((token: any, i: any) => (
-                    <input
-                      key={i}
-                      type="number"
-                      className="px-4 py-1.5 border border-secondary col-span-2 rounded-md"
-                      placeholder={`${token.name} % of the bucket`}
-                    />
+                    <div className="grid grid-cols-4 gap-4" key={i}>
+                      <div className="flex flex-row justify-center items-center gap-1">
+                        <Image
+                          src={token.icon}
+                          alt={token.name}
+                          height={"20"}
+                          width={"20"}
+                        />
+                        {token.name}
+                      </div>
+                      <div className="col-span-3 flex flex-row justify-center items-center gap-4">
+                        <input
+                          type="number"
+                          className="px-4 py-1.5 border border-secondary rounded-md w-full"
+                          placeholder={`% of ${token.name} in the bucket`}
+                        />
+                        <TrashIcon
+                          className="h-5 w-5"
+                          onClick={() => {
+                            setTokens([...tokens, token]);
+                            let _tokens = selectedTokens;
+                            const index = _tokens.indexOf(token);
+                            if (index > -1) {
+                              _tokens.splice(index, 1);
+                            }
+                            setSelectedTokens([..._tokens]);
+                          }}
+                        />
+                      </div>
+                    </div>
                   ))}
 
-                  <div className="flex justify-end items-center">
-                    <button className="flex flex-row gap-1 text-white py-1 px-2 text-sm rounded-md shadow-sm bg-secondary">
-                      <PlusIcon className="h-5 w-5" />
-                      Add more
-                    </button>
-                  </div>
-                  <div className="flex flex-row justify-end items-center">
+                  <div className="flex flex-row justify-end items-center mt-8">
                     <button className="bg-primary px-6 py-1.5 rounded-md shadow-md text-lg">
                       Create
                     </button>
