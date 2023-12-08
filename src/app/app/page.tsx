@@ -211,7 +211,7 @@ export default function Page() {
                   <div className="flex flex-col gap-1 justify-start items-start">
                     <label htmlFor="">Name</label>
                     <input
-                      className="px-2 py-2 border border-secondary rounded-md w-full"
+                      className="px-2 py-2 border border-secondary rounded-md w-full text-secondary"
                       value={bucketName}
                       onChange={(e) => setBucketName(e.target.value)}
                       type="text"
@@ -220,7 +220,7 @@ export default function Page() {
                   <div className="flex flex-col gap-1 justify-start items-start">
                     <label htmlFor="">Description</label>
                     <textarea
-                      className="px-2 py-2 border border-secondary rounded-md w-full"
+                      className="px-2 py-2 border border-secondary rounded-md w-full text-secondary"
                       name=""
                       id=""
                       value={bucketDescription}
@@ -282,7 +282,7 @@ export default function Page() {
                           type="number"
                           // value={getTokenPercentage(token)} need to fix logic
                           onChange={(e) => handleTokenInput(e, token)}
-                          className="px-4 py-1.5 border border-secondary rounded-md w-full"
+                          className="px-4 py-1.5 border border-secondary rounded-md w-full text-secondary"
                           placeholder={`% of ${token.name} in the bucket`}
                         />
                         <TrashIcon
