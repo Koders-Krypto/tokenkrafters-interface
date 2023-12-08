@@ -16,13 +16,67 @@ import { Tokens } from "../components/constants/tokens";
 import Image from "next/image";
 import truncate from "../components/utils/truncate";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { createBucket, getDeployedBuckets, readContract } from "../components/utils/contract/contractCalls";
+import { useAccount } from 'wagmi'
+
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
   const [tokens, setTokens] = useState(Tokens);
   const [selected, setSelected] = useState(Tokens[0]);
   const [selectedTokens, setSelectedTokens] = useState<any>([]);
+  const [bucketDescription, setBucketDescription] = useState("");
+  const [bucketName, setBucketName] = useState("");
+  const [bucketValue, setBucketValue] = useState<any>([]);
+
+  const { address, isConnected, isConnecting, isDisconnected } = useAccount()
+
+  useEffect(() => {
+    if (isConnected) {
+      getDeployedBucketsWrapper();
+    }
+  }, [isConnected])
+
+  const getDeployedBucketsWrapper = async () => {
+    await getDeployedBuckets();
+  }
+
+  const handleTokenInput = (e: any, token: any) => {
+    let updated = false;
+    let _bucketValue = bucketValue;
+    for (let i = 0; i < _bucketValue.length; i++) {
+      if (_bucketValue[i].tokenAddress === token.address) {
+        // update the bucket percentage
+        _bucketValue[i].weightage = BigInt(e.target.value * 1000)
+        updated = true;
+      }
+    }
+    if (!updated) {
+      console.log("called");
+      _bucketValue.push({
+        tokenAddress: token.address,
+        weightage: BigInt(e.target.value * 1000),
+      });
+    }
+    setBucketValue(_bucketValue);
+  }
+
+  const getTokenPercentage = (token: any) => {
+    for (let i = 0; i < bucketValue.length; i++) {
+      console.log(bucketValue[i][1]);
+      if (bucketValue[i][0] === token.address && bucketValue[i][1] !== 0) {
+        return bucketValue[i][1];
+      }
+    }
+    return "";
+  }
+
+  const handleCreateBucket = async () => {
+    if (isConnected) {
+      await createBucket(bucketName, bucketDescription, "", bucketValue);
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
@@ -152,6 +206,8 @@ export default function Page() {
                     <label htmlFor="">Name</label>
                     <input
                       className="px-2 py-2 border border-secondary rounded-md w-full"
+                      value={bucketName}
+                      onChange={(e) => setBucketName(e.target.value)}
                       type="text"
                     />
                   </div>
@@ -161,6 +217,8 @@ export default function Page() {
                       className="px-2 py-2 border border-secondary rounded-md w-full"
                       name=""
                       id=""
+                      value={bucketDescription}
+                      onChange={(e) => setBucketDescription(e.target.value)}
                       cols={30}
                       rows={5}
                     ></textarea>
@@ -216,6 +274,8 @@ export default function Page() {
                       <div className="col-span-3 flex flex-row justify-center items-center gap-4">
                         <input
                           type="number"
+                          // value={getTokenPercentage(token)} need to fix logic
+                          onChange={(e) => handleTokenInput(e, token)}
                           className="px-4 py-1.5 border border-secondary rounded-md w-full"
                           placeholder={`% of ${token.name} in the bucket`}
                         />
@@ -236,7 +296,7 @@ export default function Page() {
                   ))}
 
                   <div className="flex flex-row justify-end items-center mt-8">
-                    <button className="bg-primary px-6 py-1.5 rounded-md shadow-md text-lg">
+                    <button className="bg-primary px-6 py-1.5 rounded-md shadow-md text-lg" onClick={() => handleCreateBucket()}>
                       Create
                     </button>
                   </div>
