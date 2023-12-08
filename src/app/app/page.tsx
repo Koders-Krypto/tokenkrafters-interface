@@ -17,9 +17,12 @@ import Image from "next/image";
 import truncate from "../components/utils/truncate";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { createBucket, getDeployedBuckets, readContract } from "../components/utils/contract/contractCalls";
-import { useAccount } from 'wagmi'
-
+import {
+  createBucket,
+  getDeployedBuckets,
+  readContract,
+} from "../components/utils/contract/contractCalls";
+import { useAccount } from "wagmi";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,17 +33,17 @@ export default function Page() {
   const [bucketName, setBucketName] = useState("");
   const [bucketValue, setBucketValue] = useState<any>([]);
 
-  const { address, isConnected, isConnecting, isDisconnected } = useAccount()
+  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
 
   useEffect(() => {
     if (isConnected) {
       getDeployedBucketsWrapper();
     }
-  }, [isConnected])
+  }, [isConnected]);
 
   const getDeployedBucketsWrapper = async () => {
     await getDeployedBuckets();
-  }
+  };
 
   const handleTokenInput = (e: any, token: any) => {
     let updated = false;
@@ -48,7 +51,7 @@ export default function Page() {
     for (let i = 0; i < _bucketValue.length; i++) {
       if (_bucketValue[i].tokenAddress === token.address) {
         // update the bucket percentage
-        _bucketValue[i].weightage = BigInt(e.target.value * 1000)
+        _bucketValue[i].weightage = BigInt(e.target.value * 1000);
         updated = true;
       }
     }
@@ -60,7 +63,7 @@ export default function Page() {
       });
     }
     setBucketValue(_bucketValue);
-  }
+  };
 
   const getTokenPercentage = (token: any) => {
     for (let i = 0; i < bucketValue.length; i++) {
@@ -70,13 +73,13 @@ export default function Page() {
       }
     }
     return "";
-  }
+  };
 
   const handleCreateBucket = async () => {
     if (isConnected) {
       await createBucket(bucketName, bucketDescription, "", bucketValue);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
@@ -91,13 +94,13 @@ export default function Page() {
           </div>
           <button
             onClick={() => setIsOpen(true)}
-            className="bg-white text-secondary py-2 px-6 rounded-md text-lg font-medium"
+            className=" bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium"
           >
-            Create now
+            Create Now
           </button>
         </div>
         <div className="grid grid-cols-1 gap-4 w-full">
-          <div className="flex flex-row justify-start items-center gap-2 bg-white rounded-full py-3 pl-2">
+          <div className="flex flex-row justify-start items-center gap-2 card rounded-full py-3 pl-2">
             <MagnifyingGlassIcon className="h-5 w-5 text-secondary" />
             <input
               className="bg-transparent w-full focus:outline-none text-secondary"
@@ -106,25 +109,28 @@ export default function Page() {
           </div>
           <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row gap-4 justify-start items-start">
-              <div className="bg-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-secondary">
+              <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
                 <ChartBarIcon className="h-5 w-5" />
                 <h2>Top gainers</h2>
               </div>
-              <div className="bg-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-secondary">
+              <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
                 <BoltIcon className="h-5 w-5" />
                 <h2>Popular</h2>
               </div>
-              <div className="bg-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-secondary">
+              <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
                 <ScaleIcon className="h-5 w-5" />
                 <h2>Recently rebalanced</h2>
               </div>
             </div>
             <select
-              className="text-secondary bg-primary focus:outline-none rounded-full pl-4 input px-6 pr-8 py-1.5"
+              className="text-primary bg-transparent border border-primary focus:outline-none rounded-full pl-4 px-6 pr-4 py-1.5"
               name="Sort"
               id="Sort"
             >
               <option value={"Sort"}>Sort by</option>
+              <option value={"Sort"}>Newest</option>
+              <option value={"Sort"}>Oldest</option>
+              <option value={"Sort"}>Popular</option>
             </select>
           </div>
         </div>
@@ -135,7 +141,7 @@ export default function Page() {
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
         <div className="grid grid-cols-3 w-full gap-4">
-          <div className="bg-white p-4 rounded-lg shadow-xl flex flex-col gap-4">
+          <div className="card p-6 rounded-lg shadow-xl flex flex-col gap-4">
             <div className="flex flex-row justify-between items-start">
               <div className="flex flex-col justify-start items-start gap-2">
                 <div className="h-14 flex justify-center items-center rounded-md text-white w-14 bg-green-900">
@@ -153,7 +159,7 @@ export default function Page() {
                   </h3>
                 </div>
               </div>
-              <div className="bg-primary/20 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
+              <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
                 Trending
               </div>
             </div>
@@ -190,14 +196,14 @@ export default function Page() {
           className="relative z-50 text-secondary"
         >
           {/* The backdrop, rendered as a fixed sibling to the panel container */}
-          <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+          <div className="fixed inset-0 bg-secondary/90" aria-hidden="true" />
 
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 w-screen overflow-y-auto">
             {/* Container to center the panel */}
             <div className="flex min-h-full items-center justify-center p-4">
               {/* The actual dialog panel  */}
-              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg bg-white p-6">
+              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
                 <Dialog.Title className={"text-2xl font-semibold"}>
                   Create your own bucket
                 </Dialog.Title>
@@ -296,7 +302,10 @@ export default function Page() {
                   ))}
 
                   <div className="flex flex-row justify-end items-center mt-8">
-                    <button className="bg-primary px-6 py-1.5 rounded-md shadow-md text-lg" onClick={() => handleCreateBucket()}>
+                    <button
+                      className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
+                      onClick={() => handleCreateBucket()}
+                    >
                       Create
                     </button>
                   </div>
