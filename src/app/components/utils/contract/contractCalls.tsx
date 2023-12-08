@@ -1,7 +1,7 @@
 import { publicClient } from './client'
 import { factoryAbi } from './abi/TokenKrafterFactoryAbi';
 import { BucketABI } from './abi/TokenKrafterBucketAbi';
-import { writeContract } from '@wagmi/core'
+import { writeContract, erc20ABI } from '@wagmi/core'
 
 
 
@@ -35,7 +35,7 @@ export const createBucket = async (name: string, description: string, bucketToke
         //     functionName: 'createBucket',
         //     args: [name, description, bucketTokenURI, bucketValue]
         // })
-        console.log(hash);
+        return true;
     } catch (e) {
         console.log(e);
     }
@@ -47,15 +47,20 @@ export const getDeployedBuckets = async () => {
             address: '0x465b5872fd5565f78cd723b08c686df4b5e85b3f',
             abi: factoryAbi,
             functionName: 'deployedBuckets',
-        })
-        console.log(data);
-        await getBucketDetails(data[0] as `0x{string}`);
+        });
+        const bucketDetailsArray = [];
+        for (const bucketAddress of data) {
+            const bucketDetails = await getBucketDetails(bucketAddress as `0x{string}`);
+            bucketDetailsArray.push(bucketDetails);
+        }
+        return bucketDetailsArray;
     } catch (e) {
-        console.log(e)
+        console.log(e);
+        return []; // Return an empty array in case of an error
     }
 }
 
-const getBucketDetails = async (address: `0x{string}`) => {
+export const getBucketDetails = async (address: `0x{string}`) => {
     try {
         const bucketName = await publicClient.readContract({
             address: address,
@@ -72,10 +77,31 @@ const getBucketDetails = async (address: `0x{string}`) => {
             abi: BucketABI,
             functionName: 'tokenAllocations',
         })
-        console.log(bucketName);
-        console.log(bucketDescription);
-        console.log(bucketTokens);
+        return {
+            bucketAddress: address,
+            bucketName,
+            bucketDescription,
+            bucketTokens
+        }
     } catch (e) {
         console.log(e)
     }
+}
+
+export const investInBucket = async (bucketAddresss: `0x{string}`, address: `0x{string}`, amount: number) => {
+    const { hash: approve } = await writeContract({
+        address: address,
+        abi: erc20ABI,
+        functionName: 'approve',
+        args: [bucketAddresss, BigInt(amount * 10 ** 6)]
+    })
+    const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
+    console.log(transaction);
+    const { hash } = await writeContract({
+        address: bucketAddresss,
+        abi: BucketABI,
+        functionName: 'invest',
+        args: [address, BigInt(amount * 10 ** 6)]
+    })
+    return hash;
 }

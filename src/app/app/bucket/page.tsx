@@ -1,12 +1,50 @@
+'use client'
 import { Tokens } from "@/app/components/constants/tokens";
+import { getBucketDetails, investInBucket } from "@/app/components/utils/contract/contractCalls";
 import truncate from "@/app/components/utils/truncate";
+import { getTokens } from "@/app/components/utils/utils";
 import {
   ArrowPathIcon,
   ChartBarIcon,
   QueueListIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
-export default function Page() {
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAccount } from "wagmi";
+
+
+
+export default function Page({ address }: { address: `0x{string}` }) {
+
+  const [bucket, setBucket] = useState<any>();
+
+  // const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+
+  useEffect(() => {
+    getBucketDetailsWrapper("0x6b1bE435A9355C9EE173835e2A87Eb51b7727db9" as `0x{string}`);
+  }, [])
+
+  const getBucketDetailsWrapper = async (address: `0x{string}`) => {
+    const _bucket = await getBucketDetails(address);
+    setBucket(_bucket);
+  }
+
+  const handleInvest = async () => {
+    // if (isConnected) {
+    const invest = await investInBucket("0x6b1bE435A9355C9EE173835e2A87Eb51b7727db9" as `0x{string}`, "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5" as `0x{string}`, 1000);
+    console.log(invest);
+    // }
+  }
+
+  if (!bucket) {
+    return (
+      <div className="flex justify-center items-center text-2xl">
+        LOADING ...
+      </div>
+    )
+  }
+
   return (
     <section className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
       <div className="card w-full flex flex-row justify-between items-center p-8">
@@ -17,11 +55,11 @@ export default function Page() {
             </div>
             <div className="flex flex-col justify-start gap-4 items-start">
               <div className="flex flex-col gap-1">
-                <h2 className="font-medium text-2xl">Balanced Case</h2>
+                <h2 className="font-medium text-2xl">{bucket.bucketName}</h2>
                 <h3 className="text-sm">
-                  Managed by{" "}
+                  Bucket Address {" "}
                   {truncate(
-                    "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                    bucket.bucketAddress,
                     12,
                     "..."
                   )}
@@ -29,15 +67,14 @@ export default function Page() {
               </div>
               <div className="flex flex-row justify-start items-center max-w-lg gap-2">
                 <p>
-                  A portfolio of stocks, which will get benefit from the RE
-                  sector development. Rec amount {">"} 4 lac
+                  {bucket.bucketDescription}
                 </p>
               </div>
             </div>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-4">
-          <div className="bg-primary/90 text-secondary px-4 py-1 text-lg rounded-md shadow-sm font-medium">
+          <div onClick={() => handleInvest()} className="bg-primary/90 text-secondary px-4 py-1 text-lg rounded-md shadow-sm font-medium">
             Invest
           </div>
           <div className="bg-transparent border border-primary  text-primary px-4 py-1 text-lg rounded-md shadow-sm font-medium">
@@ -51,19 +88,21 @@ export default function Page() {
           <h2 className="text-primary font-semibold text-xl">Tokens List</h2>
         </div>
         <div className="grid grid-cols-4 gap-4 w-full">
-          {Tokens.map((token, i) => {
+          {bucket.bucketTokens.map((token: any, i: number) => {
+            const _token = getTokens(token.tokenAddress);
             return (
               <div
                 className="card flex flex-col gap-2 justify-center items-center p-4"
                 key={i}
               >
                 <Image
-                  src={token.icon}
-                  alt={token.name}
+                  key={i}
+                  src={_token!.icon}
+                  alt={_token!.name}
                   height={"30"}
                   width={"30"}
                 />
-                <h3 className="text-lg font-semibold">{token.name} (20%)</h3>
+                <h3 className="text-lg font-semibold">{token.name} ({Number(token.weightage) / 1000})</h3>
               </div>
             );
           })}

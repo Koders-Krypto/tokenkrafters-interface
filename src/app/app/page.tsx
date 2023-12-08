@@ -23,6 +23,8 @@ import {
   readContract,
 } from "../components/utils/contract/contractCalls";
 import { useAccount } from "wagmi";
+import { getTokens } from "../components/utils/utils";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +34,9 @@ export default function Page() {
   const [bucketDescription, setBucketDescription] = useState("");
   const [bucketName, setBucketName] = useState("");
   const [bucketValue, setBucketValue] = useState<any>([]);
+  const [bucketList, setBucketList] = useState<any>([]);
+
+  const router = useRouter();
 
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
 
@@ -42,7 +47,9 @@ export default function Page() {
   }, [isConnected]);
 
   const getDeployedBucketsWrapper = async () => {
-    await getDeployedBuckets();
+    const deployedBuckets = await getDeployedBuckets();
+    console.log(deployedBuckets);
+    setBucketList(deployedBuckets);
   };
 
   const handleTokenInput = (e: any, token: any) => {
@@ -56,7 +63,6 @@ export default function Page() {
       }
     }
     if (!updated) {
-      console.log("called");
       _bucketValue.push({
         tokenAddress: token.address,
         weightage: BigInt(e.target.value * 1000),
@@ -78,6 +84,7 @@ export default function Page() {
   const handleCreateBucket = async () => {
     if (isConnected) {
       await createBucket(bucketName, bucketDescription, "", bucketValue);
+      // redirect to home page
     }
   };
 
@@ -143,43 +150,51 @@ export default function Page() {
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
-          <div className="card p-6 rounded-lg shadow-xl flex flex-col gap-4">
-            <div className="flex flex-row justify-between items-start">
-              <div className="flex flex-col justify-start items-start gap-2">
-                <div className="h-14 flex justify-center items-center rounded-md text-white w-14 bg-green-900">
-                  <h2 className="text-5xl">B</h2>
+          {bucketList.map((bucket: any, index: number) => {
+            return (
+              <div onClick={() => router.push("/app/bucket/" + bucket.bucketAddress)} className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer">
+                <div className="flex flex-row justify-between items-start">
+                  <div className="flex flex-col justify-start items-start gap-2">
+                    <div className="h-14 flex justify-center items-center rounded-md text-white w-14 bg-green-900">
+                      <h2 className="text-5xl">B</h2>
+                    </div>
+                    <div className="flex flex-col justify-start items-start">
+                      <h2 className="font-medium text-lg">{bucket.name}</h2>
+                      <h3 className="text-sm">
+                        by{" "}
+                        {truncate(
+                          bucket.bucketAddress,
+                          12,
+                          "..."
+                        )}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
+                    Trending
+                  </div>
                 </div>
-                <div className="flex flex-col justify-start items-start">
-                  <h2 className="font-medium text-lg">Balanced Case</h2>
-                  <h3 className="text-sm">
-                    by{" "}
-                    {truncate(
-                      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                      12,
-                      "..."
-                    )}
-                  </h3>
+                <div className="flex flex-row justify-start items-center gap-2">
+                  {bucket.bucketTokens.map((tokens: any, i: number) => {
+                    const _token = getTokens(tokens.tokenAddress);
+                    return (
+                      <Image
+                        key={i}
+                        src={_token!.icon}
+                        alt={_token!.name}
+                        height={"30"}
+                        width={"30"}
+                      />
+                    );
+                  })}
+                  {/* <h5>+2</h5> */}
                 </div>
               </div>
-              <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
-                Trending
-              </div>
-            </div>
-            <div className="flex flex-row justify-start items-center gap-2">
-              {tokens.map((token, i) => {
-                return (
-                  <Image
-                    key={i}
-                    src={token.icon}
-                    alt={token.name}
-                    height={"30"}
-                    width={"30"}
-                  />
-                );
-              })}
-              <h5>+2</h5>
-            </div>
-          </div>
+            )
+          })}
+
+
+
         </div>
       </div>
       <Transition
