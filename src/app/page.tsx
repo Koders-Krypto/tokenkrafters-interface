@@ -9,7 +9,7 @@ export default function Home() {
           <div className="flex flex-col gap-8 justify-center items-start">
             <div className="flex flex-col gap-8 justify-center items-start">
               <div className="flex flex-col gap-2 justify-center items-start">
-                <h1 className="text-4xl md:text-7xl font-semibold gradient-title">
+                <h1 className="text-6xl md:text-7xl font-semibold gradient-title">
                   Unlocking Infinite Possibilities
                 </h1>
                 <h2 className=" text-xl md:text-2xl">

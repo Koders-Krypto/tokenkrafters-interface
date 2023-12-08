@@ -84,9 +84,11 @@ export default function Page() {
   return (
     <div className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
       <div className="flex flex-col gap-6 w-full">
-        <div className="bg-primary flex flex-row justify-between items-center w-full rounded-lg shadow-md px-6 py-4">
+        <div className="bg-primary flex flex-col gap-4 md:flex-row justify-between items-center w-full rounded-lg shadow-md md:px-6 p-4 md:py-4">
           <div className="flex flex-row justify-start items-center gap-2">
-            <BellAlertIcon className="h-6 w-6" />
+            <div className="w-6 h-6">
+              <BellAlertIcon className="h-6 w-6" />
+            </div>
             <h1 className="text-xl font-medium">
               Craft Your Future: Build Your Crypto Kingdom, One Bucket at a
               Time.
@@ -94,21 +96,21 @@ export default function Page() {
           </div>
           <button
             onClick={() => setIsOpen(true)}
-            className=" bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium"
+            className="w-full md:w-44 bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium"
           >
             Create Now
           </button>
         </div>
         <div className="grid grid-cols-1 gap-4 w-full">
           <div className="flex flex-row justify-start items-center gap-2 card rounded-full py-3 pl-2">
-            <MagnifyingGlassIcon className="h-5 w-5 text-secondary" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-white" />
             <input
-              className="bg-transparent w-full focus:outline-none text-secondary"
+              className="bg-transparent w-full focus:outline-none text-white"
               placeholder="Search for buckets (Ex: Bull Market, Token creator address etc)"
             />
           </div>
-          <div className="flex flex-row justify-between items-center">
-            <div className="flex flex-row gap-4 justify-start items-start">
+          <div className="flex flex-row flex-wrap justify-between items-center gap-4">
+            <div className="flex flex-row flex-wrap gap-4 justify-start items-start">
               <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
                 <ChartBarIcon className="h-5 w-5" />
                 <h2>Top gainers</h2>
@@ -140,7 +142,7 @@ export default function Page() {
           <Square3Stack3DIcon className="h-6 w-6 text-primary" />
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
-        <div className="grid grid-cols-3 w-full gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
           <div className="card p-6 rounded-lg shadow-xl flex flex-col gap-4">
             <div className="flex flex-row justify-between items-start">
               <div className="flex flex-col justify-start items-start gap-2">
@@ -243,7 +245,7 @@ export default function Page() {
                   >
                     <div className="flex flex-col gap-1 relative w-full">
                       <label htmlFor="">Select Token</label>
-                      <div className="flex flex-row gap-4 justify-start items-center">
+                      <div className="flex flex-row gap-4 flex-wrap justify-start items-center">
                         {tokens.map((token: any, i) => {
                           return (
                             <div
