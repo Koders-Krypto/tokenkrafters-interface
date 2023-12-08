@@ -11,7 +11,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/20/solid";
 const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const Links = [
     {
