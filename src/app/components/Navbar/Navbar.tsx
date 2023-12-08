@@ -10,6 +10,21 @@ const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
   const [open, setOpen] = useState(false);
 
+  const Links = [
+    {
+      name: "Home",
+      link: "/",
+    },
+    {
+      name: "Buckets",
+      link: "/app",
+    },
+    {
+      name: "Raffle",
+      link: "/app/raffle",
+    },
+  ];
+
   const pathname = usePathname();
   //navbar scroll changeBackground function
   const changeBackground = () => {
@@ -39,7 +54,7 @@ const Navbar = () => {
               : "fixed z-20 flex w-full flex-col items-center justify-between px-6 py-4 lg:px-24"
           }
         >
-          <div className="grid grid-cols-2 gap-4 place-content-between w-full">
+          <div className="grid grid-cols-3 gap-4 place-content-between w-full">
             <Link
               className="flex flex-row justify-start items-center gap-2"
               href={"/"}
@@ -51,6 +66,27 @@ const Navbar = () => {
                 width={"250"}
               />
             </Link>
+            <div className="flex flex-row justify-center items-center text-primary">
+              <ul className="flex flex-row justify-center items-center gap-12 text-lg">
+                {Links.map((link) => {
+                  return (
+                    <li key={link.name}>
+                      <Link
+                        className="flex flex-col justify-center items-center gap-1"
+                        href={link.link}
+                      >
+                        {link.name}
+                        {pathname === link.link ? (
+                          <span className="w-2 h-1 bg-white rounded-full"></span>
+                        ) : (
+                          <span className="w-2 h-1 bg-transparent rounded-full"></span>
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
             <div className="flex justify-end items-center">
               <ConnectButton />
             </div>
