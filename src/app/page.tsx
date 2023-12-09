@@ -22,37 +22,37 @@ export default function Home() {
   ];
   const Section2 = [
     {
-      icon: "/icons/section-2/stability.png",
-      name: "Stability",
-      desc: "Go for stable returns at low volatility levels",
+      icon: "/icons/section-2/1/investment.png",
+      name: "Diversified Portfolio",
+      desc: "Choose from a variety of pre-made investment buckets or create your own for a personalized investment approach",
     },
     {
-      icon: "/icons/section-2/explore.png",
-      name: "Explore",
-      desc: "Explore portfolios on disruptive ideas & long-term trends",
+      icon: "/icons/section-2/1/nft.png",
+      name: "NFT Ownership Proof",
+      desc: "Every bucket purchase comes with an NFT, proving your ownership of the tokens. You can trade it or use it to withdraw your funds",
     },
     {
-      icon: "/icons/section-2/low.png",
-      name: "Low Inv. Amount",
-      desc: "Start with any amount of investment you desire",
+      icon: "/icons/section-2/1/raffle.png",
+      name: "Exciting Raffle Rewards",
+      desc: "Automatic entry into the raffle with every bucket purchase, giving you a chance to win rewards funded by the remaining investment money",
     },
     {
-      icon: "/icons/section-2/tracking.png",
-      name: "Trackers",
-      desc: "Take exposure to important sectors using buckets",
+      icon: "/icons/section-2/1/withdrawal.png",
+      name: "Flexible Withdrawals",
+      desc: "Withdraw your invested funds at any time by redeeming the associated NFT, providing users with control over their investments",
     },
   ];
   return (
     <>
       <main className="flex min-h-[95vh] flex-col items-center justify-center p-6 pt-24 md:p-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <div className="flex flex-col gap-8 justify-center items-start">
-            <div className="flex flex-col gap-8 justify-center items-start">
-              <div className="flex flex-col gap-2 justify-center items-start">
-                <h1 className="text-6xl md:text-7xl font-semibold gradient-title">
+        <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+          <div className="flex flex-col items-start justify-center gap-8">
+            <div className="flex flex-col items-start justify-center gap-8">
+              <div className="flex flex-col items-start justify-center gap-2">
+                <h1 className="text-6xl font-semibold md:text-7xl gradient-title">
                   Unlocking Infinite Possibilities
                 </h1>
-                <h2 className=" text-xl md:text-2xl">
+                <h2 className="text-xl md:text-2xl">
                   Your Gateway to Seamless Token Swaps and Diversified
                   Portfolios
                 </h2>
@@ -60,12 +60,12 @@ export default function Home() {
 
               <Link
                 href={"/app"}
-                className="bg-primary px-8 py-3 text-lg text-black rounded-lg shadow-lg font-semibold"
+                className="px-8 py-3 text-lg font-semibold text-black rounded-lg shadow-lg bg-primary"
               >
                 View Dapp
               </Link>
             </div>
-            <div className="flex flex-row gap-4 justify-start items-center">
+            <div className="flex flex-row items-center justify-start gap-4">
               {Chains.map((chain, i) => {
                 return (
                   <div key={i}>
@@ -80,7 +80,7 @@ export default function Home() {
               })}
             </div>
           </div>
-          <div className="w-full flex justify-end items-center">
+          <div className="flex items-center justify-end w-full">
             <Image
               className=""
               src={"/hero-section.svg"}
@@ -91,16 +91,16 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <a href="#below" className="flex justify-center items-center">
-        <ChevronDownIcon className="h-10 w-10 animate-bounce" />
+      <a href="#below" className="flex items-center justify-center">
+        <ChevronDownIcon className="w-10 h-10 animate-bounce" />
       </a>
       <section
-        className="md:px-24 p-6 flex flex-col justify-center items-center py-12 md:py-36"
+        className="flex flex-col items-center justify-center p-6 py-12 md:px-24 md:py-36"
         id="below"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 place-content-center place-items-center gap-12 w-full">
+        <div className="grid w-full grid-cols-1 gap-12 md:grid-cols-2 place-content-center place-items-center">
           <div className="flex flex-col gap-2">
-            <h2 className="gradient-title text-4xl md:text-5xl">
+            <h2 className="text-4xl gradient-title md:text-5xl">
               Idea-Infused Crypto Portfolios For You
             </h2>
             <h3 className="text-lg md:text-xl">
@@ -112,7 +112,7 @@ export default function Home() {
             {Section1.map((list, i) => {
               return (
                 <div
-                  className="flex flex-row gap-6 justify-center items-center"
+                  className="flex flex-row items-center justify-center gap-6"
                   key={i}
                 >
                   <Image
@@ -123,7 +123,7 @@ export default function Home() {
                   />
 
                   <div className="flex flex-col gap-1">
-                    <h4 className="font-medium text-2xl text-primary">
+                    <h4 className="text-2xl font-medium text-primary">
                       {list.name}
                     </h4>
                     <h5 className="text-base">{list.desc}</h5>
@@ -134,9 +134,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="md:px-24 p-6 flex flex-col justify-center gap-8 items-center py-12 md:py-36">
-        <div className="flex flex-col justify-center items-center gap-2">
-          <h2 className="gradient-title text-3xl md:text-4xl">
+      <section className="flex flex-col items-center justify-center gap-8 p-6 py-12 md:px-24 md:py-36">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <h2 className="text-3xl gradient-title md:text-4xl">
             There is a Krafted Token Bucket for everyone
           </h2>
           <p className="text-xl">
@@ -144,20 +144,22 @@ export default function Home() {
             volatililty? Choose from a diverse menu
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 w-full">
+        <div className="grid w-full grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
           {Section2.map((card, k) => {
             return (
               <div
                 key={k}
-                className="bg-secondary/50 border border-white rounded-xl flex flex-col gap-4 items-center md:text-left text-center md:items-start justify-center p-6"
+                className="flex flex-col items-center justify-start gap-4 p-6 text-center border border-white bg-secondary/50 rounded-xl md:text-left md:items-start"
               >
-                <Image
-                  src={card.icon}
-                  alt={card.name}
-                  height={"100"}
-                  width={"100"}
-                />
-                <h3 className="font-medium text-xl text-primary">
+                <div className="w-24 h-24">
+                  <Image
+                    src={card.icon}
+                    alt={card.name}
+                    height={"100"}
+                    width={"100"}
+                  />
+                </div>
+                <h3 className="text-xl font-medium text-primary">
                   {card.name}
                 </h3>
                 <h5 className="text-base font-light">{card.desc}</h5>

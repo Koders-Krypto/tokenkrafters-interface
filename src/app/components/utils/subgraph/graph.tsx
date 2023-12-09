@@ -107,9 +107,10 @@ export const getPortfolio = async (account: string, chainId: any) => {
       investmentToken
     }
   }
-}`, variables: { account: account }
+}`,
+    variables: { account: account },
   };
 
   const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
   return response.data.data.account.investments;
-}
+};

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import PieChartGraph from "@/app/components/Chart/PieChartGraph";
 import { getPortfolio } from "@/app/components/utils/subgraph/graph";
 import truncate from "@/app/components/utils/truncate";
@@ -13,7 +13,6 @@ import { formatUnits } from "viem";
 import { useAccount, useNetwork } from "wagmi";
 
 export default function Portfolio() {
-
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
   const [portfolio, setPortfolio] = useState<any>([]);
 
@@ -46,7 +45,7 @@ export default function Portfolio() {
     });
     const combinedDataArray = Array.from(combinedDataMap.values());
     setPortfolio(combinedDataArray);
-  }
+  };
 
   return (
     <section className="flex flex-col items-start justify-start min-h-screen gap-12 px-6 py-4 pt-28 lg:px-24 text-secondary">
@@ -61,35 +60,32 @@ export default function Portfolio() {
             </div>
           </div>
           <div className="grid w-full grid-cols-1 gap-2">
-            <div className="hidden w-full grid-cols-5 gap-6 px-6 py-2 text-white md:grid">
+            <div className="hidden w-full grid-cols-4 gap-6 px-6 py-2 text-white md:grid">
               <div>ID</div>
               <div>Bucket</div>
               <div>Amount ($)</div>
-              {/* <div>Tx Hash</div> */}
-              {/* <div>Explorer</div>  */}
+              <div className="flex items-center justify-center">Actions</div>
             </div>
-            {portfolio.map((item: any, index: number) => {
-              return <div
-                key={index}
-                className="grid w-full grid-cols-2 gap-6 px-6 py-3 card md:grid-cols-5">
-                <div>{(index + 1) + " ."}</div>
-                <div className="w-full truncate">
-                  {item.bucket.name}
+            {portfolio.length <= 0 && (
+              <div className="text-white">Porfolio is empty!!!</div>
+            )}
+            {portfolio?.map((item: any, index: number) => {
+              return (
+                <div
+                  key={index}
+                  className="grid w-full grid-cols-2 gap-6 px-6 py-3 card md:grid-cols-4"
+                >
+                  <div>{index + 1 + ".)"}</div>
+                  <div className="w-full truncate">{item.bucket.name}</div>
+                  <div>${item.investmentAmount}</div>
+                  <div className="flex items-center justify-center">
+                    <button className="px-4 py-1 shadow-md bg-primary rounded-xl text-secondary">
+                      Withdraw
+                    </button>
+                  </div>
                 </div>
-                <div>${item.investmentAmount}</div>
-                {/* <div className="w-full truncate">
-                  {truncate(
-                    "0xfa9068fa87219f52b4017dfa0fcc9d5b2495017491f8533aa387f816cc2efaf5",
-                    22,
-                    "..."
-                  )}
-                </div>
-                <div>
-                  <button className="text-primary">Link</button>
-                </div> */}
-              </div>
+              );
             })}
-
           </div>
         </div>
         <div className="flex flex-col items-center justify-between w-full gap-0 px-6 py-4 rounded-lg shadow-md bg-primary">
