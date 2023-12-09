@@ -194,13 +194,10 @@ const factoryAddress = "0x795220dda80b598093f88c9f46ca044a13d6358d";
 
 const paymentAddress = "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
 
-const graphUrl = "https://graph";
+const tokenCrafterRaffle = "0x39790dedfdc1460251980fcf6aefcacfb271889f";
 
-export {
-  Tokens,
-  chainObj,
-  factoryAddress,
-  paymentAddress,
-  tokenSvgImage,
-  getChainSvg,
-};
+const raffleTokenAddress = "0x0a03a0acba9677cf6b6750858a610ca2f2dd2200";
+
+const graphUrl = "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
+
+export { Tokens, chainObj, factoryAddress, paymentAddress, tokenSvgImage, getChainSvg, tokenCrafterRaffle, graphUrl, raffleTokenAddress };

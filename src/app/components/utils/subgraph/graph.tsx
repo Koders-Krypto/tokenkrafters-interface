@@ -60,10 +60,6 @@ export const getBucketDetailView = async (address: string) => {
 }`,
     variables: { bucketId: address },
   };
-
-  const data = {
-    query: graphqlQuery,
-  };
   const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
   return response.data.data.bucket;
 };
@@ -87,10 +83,38 @@ export const getBucketPortfolioView = async (
 }`,
     variables: { bucket: bucketAddress, investor: userAddress },
   };
-
-  const data = {
-    query: graphqlQuery,
-  };
   const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
   return response.data.data.investments;
+};
+
+export const getPortfolio = async (account: string) => {
+  const graphqlQuery = {
+    query: `query MyQuery($account: ID!) {
+  account(id: $account) {
+    investments {
+      bucket {
+        id
+        name
+        description
+        tokenURI
+        createdAt
+        creator {
+          id
+        }
+      }
+      allocations {
+        token
+        amount
+      }
+      investedAt
+      investmentAmount
+      investmentToken
+    }
+  }
+}`,
+    variables: { account: account },
+  };
+
+  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+  return response.data.data.account.investments;
 };

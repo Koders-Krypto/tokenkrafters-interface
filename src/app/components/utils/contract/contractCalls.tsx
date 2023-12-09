@@ -2,7 +2,8 @@ import { publicClient } from './client'
 import { factoryAbi } from './abi/TokenKrafterFactoryAbi';
 import { BucketABI } from './abi/TokenKrafterBucketAbi';
 import { writeContract, erc20ABI } from '@wagmi/core'
-import { factoryAddress } from '../../constants/tokens';
+import { factoryAddress, raffleTokenAddress, tokenCrafterRaffle } from '../../constants/tokens';
+import { raffleAbi } from './abi/TokenKrafterRaffle';
 
 
 
@@ -92,7 +93,6 @@ export const investInBucket = async (bucketAddress: `0x{string}`, address: `0x{s
             args: [bucketAddress, BigInt(amount * 10 ** 6)]
         })
         const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
-        console.log(transaction);
         const { hash } = await writeContract({
             address: bucketAddress,
             abi: BucketABI,
@@ -104,4 +104,25 @@ export const investInBucket = async (bucketAddress: `0x{string}`, address: `0x{s
         console.log(e);
     }
 
+}
+
+export const enterRaffle = async (amount: number) => {
+    try {
+        const { hash: approve } = await writeContract({
+            address: raffleTokenAddress,
+            abi: erc20ABI,
+            functionName: 'approve',
+            args: [tokenCrafterRaffle, BigInt(amount * 10 ** 6)]
+        })
+        const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
+        const { hash } = await writeContract({
+            address: tokenCrafterRaffle,
+            abi: raffleAbi,
+            functionName: 'deposit',
+            args: [[raffleTokenAddress], [BigInt(amount * 10 ** 6)]]
+        })
+        return hash;
+    } catch (e) {
+        console.log(e);
+    }
 }
