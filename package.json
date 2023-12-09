@@ -19,6 +19,7 @@
     "pino-pretty": "^10.2.3",
     "react": "^18",
     "react-dom": "^18",
+    "recharts": "^2.10.3",
     "viem": "^1.19.11",
     "wagmi": "^1.4.8"
   },

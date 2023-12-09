@@ -1,4 +1,5 @@
 "use client";
+import Chart from "@/app/components/Chart/Chart";
 import { Tokens } from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
 import {
@@ -98,52 +99,113 @@ export default function Page({
             </div>
           </div>
         </div>
-        <div className="flex flex-col justify-start gap-4 items-start w-full">
-          <div className="flex flex-row justify-start items-center gap-2">
-            <QueueListIcon className="h-6 w-6 text-primary" />
-            <h2 className="text-primary font-semibold text-xl">Tokens List</h2>
+        <div className="grid grid-cols-3 gap-8 w-full">
+          <div className="flex flex-col gap-12 col-span-2">
+            <div className="flex flex-col justify-start gap-4 items-start w-full">
+              <div className="flex flex-row justify-start items-center gap-2">
+                <QueueListIcon className="h-6 w-6 text-primary" />
+                <h2 className="text-primary font-semibold text-xl">
+                  Tokens List
+                </h2>
+              </div>
+              <div className="grid grid-cols-4 gap-4 w-full">
+                {bucket.bucketTokens.map((token: any, i: number) => {
+                  const _token = getTokens(token.tokenAddress);
+                  return (
+                    <div
+                      className="card flex flex-col gap-2 justify-center items-center p-4"
+                      key={i}
+                    >
+                      <Image
+                        key={i}
+                        src={_token!.icon}
+                        alt={_token!.name}
+                        height={"30"}
+                        width={"30"}
+                      />
+                      <h3 className="text-lg font-semibold">
+                        {_token.name} ({Number(token.weightage) / 1000}%)
+                      </h3>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="flex flex-col justify-start gap-4 items-start w-full">
+              <div className="flex flex-row justify-start items-center gap-2">
+                <ChartBarIcon className="h-6 w-6 text-primary" />
+                <h2 className="text-primary font-semibold text-xl">Chart</h2>
+              </div>
+              <div className="w-full">
+                <Chart />
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-4 gap-4 w-full">
-            {bucket.bucketTokens.map((token: any, i: number) => {
-              const _token = getTokens(token.tokenAddress);
-              return (
-                <div
-                  className="card flex flex-col gap-2 justify-center items-center p-4"
-                  key={i}
-                >
-                  <Image
-                    key={i}
-                    src={_token!.icon}
-                    alt={_token!.name}
-                    height={"30"}
-                    width={"30"}
-                  />
-                  <h3 className="text-lg font-semibold">
-                    {_token.name} ({Number(token.weightage) / 1000}%)
+          <div className="flex flex-col justify-start gap-4 items-start w-full">
+            <div className="flex flex-row justify-start items-center gap-2">
+              <ArrowPathIcon className="h-6 w-6 text-primary" />
+              <h2 className="text-primary font-semibold text-xl">
+                Rebalance History
+              </h2>
+            </div>
+            <div className="card p-6 py-12 flex justify-start items-start font-bold text-2xl w-full">
+              <div className="flex flex-col justify-start items-start">
+                <div className="ps-2 my-2 first:mt-0">
+                  <h3 className="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">
+                    Dec 8, 2023
                   </h3>
                 </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="flex flex-col justify-start gap-4 items-start w-full">
-          <div className="flex flex-row justify-start items-center gap-2">
-            <ChartBarIcon className="h-6 w-6 text-primary" />
-            <h2 className="text-primary font-semibold text-xl">Chart</h2>
-          </div>
-          <div className="card p-6 py-24 flex justify-center items-center font-bold text-2xl w-full">
-            Coming Soon
-          </div>
-        </div>
-        <div className="flex flex-col justify-start gap-4 items-start w-full">
-          <div className="flex flex-row justify-start items-center gap-2">
-            <ArrowPathIcon className="h-6 w-6 text-primary" />
-            <h2 className="text-primary font-semibold text-xl">
-              Rebalance History
-            </h2>
-          </div>
-          <div className="card p-6 py-24 flex justify-center items-center font-bold text-2xl w-full">
-            Coming Soon
+
+                <div className="flex gap-x-3">
+                  <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-gray-700">
+                    <div className="relative z-10 w-7 h-7 flex justify-center items-center">
+                      <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                    </div>
+                  </div>
+
+                  <div className="grow pt-0.5 pb-8">
+                    <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                      Bucket Created
+                    </h3>
+
+                    <button
+                      type="button"
+                      className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    >
+                      by{" "}
+                      {truncate(
+                        "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+                        24,
+                        "..."
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="ps-2 my-2 first:mt-0">
+                  <h3 className="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">
+                    10 Dec, 2023
+                  </h3>
+                </div>
+
+                <div className="flex gap-x-3">
+                  <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-gray-700">
+                    <div className="relative z-10 w-7 h-7 flex justify-center items-center">
+                      <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                    </div>
+                  </div>
+
+                  <div className="grow pt-0.5 pb-8">
+                    <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                      Take a break ⛳️
+                    </h3>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      Just chill for now... 😉
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
