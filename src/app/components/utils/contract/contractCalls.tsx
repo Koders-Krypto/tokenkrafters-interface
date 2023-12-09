@@ -92,7 +92,12 @@ export const investInBucket = async (bucketAddress: `0x{string}`, address: `0x{s
             functionName: 'approve',
             args: [bucketAddress, BigInt(amount * 10 ** 6)]
         })
-        const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
+        try {
+            const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
+        } catch (e) {
+            await delay(10000);
+        }
+
         const { hash } = await writeContract({
             address: bucketAddress,
             abi: BucketABI,
@@ -125,4 +130,9 @@ export const enterRaffle = async (amount: number) => {
     } catch (e) {
         console.log(e);
     }
+}
+
+
+function delay(ms: any) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

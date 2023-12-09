@@ -56,7 +56,7 @@ export const getBucketDetailView = async (address: string, chainId: any) => {
     variables: { bucketId: address },
   };
   const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
-  return response.data.data.bucket;
+  return response.data.data.bucket ? response.data.data.bucket : [];
 };
 
 export const getBucketPortfolioView = async (
@@ -80,7 +80,7 @@ export const getBucketPortfolioView = async (
     variables: { bucket: bucketAddress, investor: userAddress },
   };
   const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
-  return response.data.data.investments;
+  return response.data.data.investments ? response.data.data.investments : [];
 };
 
 export const getPortfolio = async (account: string, chainId: any) => {
@@ -112,5 +112,5 @@ export const getPortfolio = async (account: string, chainId: any) => {
   };
 
   const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
-  return response.data.data.account.investments;
+  return response.data.data.account ? response.data.data.account.investments : [];
 };

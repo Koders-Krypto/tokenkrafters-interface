@@ -1,5 +1,5 @@
 import { walletConnectProvider, EIP6963Connector } from "@web3modal/wagmi";
-import { arbitrum, arbitrumGoerli } from "viem/chains";
+import { arbitrum, arbitrumGoerli, polygonMumbai } from "viem/chains";
 import { Chain, configureChains, createConfig, mainnet } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -13,7 +13,7 @@ const {
   chains: [, ...chains],
   publicClient,
   webSocketPublicClient,
-} = configureChains([mainnet, arbitrumGoerli], [publicProvider()]);
+} = configureChains([mainnet, arbitrumGoerli, polygonMumbai], [publicProvider()]);
 
 const metadata = {
   name: "TokenKrafters",

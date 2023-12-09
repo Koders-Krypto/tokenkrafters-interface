@@ -235,9 +235,64 @@ export const BucketABI = [
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "amount",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct ITokenKrafterBucket.UserAllocation[]",
+        "name": "allocations",
+        "type": "tuple[]"
       }
     ],
     "name": "Invested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "weightage",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct ITokenKrafterBucket.TokenAllocation[]",
+        "name": "newTokenAllocation",
+        "type": "tuple[]"
+      }
+    ],
+    "name": "Rebalanced",
     "type": "event"
   },
   {
@@ -263,6 +318,25 @@ export const BucketABI = [
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "investor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdraw",
     "type": "event"
   },
   {

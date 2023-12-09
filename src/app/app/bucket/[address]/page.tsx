@@ -1,6 +1,6 @@
 "use client";
 import Chart from "@/app/components/Chart/AreaChart";
-import { paymentAddress } from "@/app/components/constants/tokens";
+import { getPaymentAddress } from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
 import { investInBucket } from "@/app/components/utils/contract/contractCalls";
 import {
@@ -77,7 +77,7 @@ export default function Page({
     if (value.length > 0) {
       const invest = await investInBucket(
         bucketAddress,
-        paymentAddress as `0x{string}`,
+        getPaymentAddress(chain?.id!) as `0x{string}`,
         parseInt(value)
       );
       console.log(invest);

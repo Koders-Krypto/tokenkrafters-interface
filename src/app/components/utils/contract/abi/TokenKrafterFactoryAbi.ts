@@ -27,12 +27,6 @@ export const factoryAbi = [
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "bucketId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
         "name": "name",
         "type": "string"
@@ -42,6 +36,30 @@ export const factoryAbi = [
         "internalType": "string",
         "name": "description",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tokenURI",
+        "type": "string"
+      },
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "tokenAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "weightage",
+            "type": "uint256"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct ITokenKrafterBucket.TokenAllocation[]",
+        "name": "tokenAllocations",
+        "type": "tuple[]"
       }
     ],
     "name": "BucketCreated",
