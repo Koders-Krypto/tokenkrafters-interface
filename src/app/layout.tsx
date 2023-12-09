@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import { Providers } from "./components/providers";
+import { Toaster } from "react-hot-toast";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -22,8 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={jost.className + " hero-background"}>
         <Providers>
-          {" "}
-          <Navbar />
+          <Toaster position="bottom-center" reverseOrder={false} /> <Navbar />
           {children}
         </Providers>
         <Footer />

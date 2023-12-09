@@ -495,7 +495,7 @@ const getTokens = (chainId: number) => {
     default:
       return ArbitrumTokens;
   }
-}
+};
 
 const getsSubGraph = (chainId: number) => {
   switch (chainId) {
@@ -512,7 +512,7 @@ const getsSubGraph = (chainId: number) => {
     default:
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
   }
-}
+};
 
 const getDeploymentFactoryAddressAddress = (chainId: number) => {
   switch (chainId) {
@@ -529,7 +529,7 @@ const getDeploymentFactoryAddressAddress = (chainId: number) => {
     default:
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
   }
-}
+};
 
 const getPaymentAddress = (chainId: number) => {
   switch (chainId) {
@@ -546,11 +546,36 @@ const getPaymentAddress = (chainId: number) => {
     default:
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
   }
-}
+};
 
+const getChainExplorer = (chainId: number) => {
+  switch (chainId) {
+    case 80001: // mumbai
+      return "https://mumbai.polygonscan.com/tx/";
+    case 421613: // arb goerli
+      return "https://goerli.arbiscan.io/tx/";
+    case 44787: // celo
+      return "https://explorer.celo.org/alfajores/tx/";
+    case 8453: // base
+      return "https://goerli.basescan.org/tx/";
+    case 534352: // scroll
+      return "https://sepolia-blockscout.scroll.io/tx/";
+    default:
+      return "https://mumbai.polygonscan.com/tx/";
+  }
+};
 
 const tokenCrafterRaffle = "0x39790dedfdc1460251980fcf6aefcacfb271889f";
 
 const raffleTokenAddress = "0x0a03a0acba9677cf6b6750858a610ca2f2dd2200";
 
-export { getTokens, getsSubGraph, getDeploymentFactoryAddressAddress, getPaymentAddress, getChainSvg, tokenCrafterRaffle, raffleTokenAddress };
+export {
+  getTokens,
+  getsSubGraph,
+  getDeploymentFactoryAddressAddress,
+  getPaymentAddress,
+  getChainSvg,
+  tokenCrafterRaffle,
+  raffleTokenAddress,
+  getChainExplorer,
+};

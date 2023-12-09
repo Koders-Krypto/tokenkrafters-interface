@@ -1,27 +1,23 @@
-'use client';
+"use client";
 import { enterRaffle } from "@/app/components/utils/contract/contractCalls";
 import truncate from "@/app/components/utils/truncate";
 import { Dialog, Transition } from "@headlessui/react";
 import { TicketIcon, TrophyIcon } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
 import Image from "next/image";
-
+import toast from "react-hot-toast";
 
 export default function Page() {
-
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState("");
-
 
   const handleInvest = async () => {
     // if (isConnected) {
     if (value.length > 0) {
-      const invest = await enterRaffle(
-        parseInt(value)
-      );
+      const invest = await enterRaffle(parseInt(value));
       console.log(invest);
     } else {
-      //toast
+      toast.error("Enter the USDC amount to Invest");
       console.log("Enter the USDC amount to Invest");
     }
     // }
@@ -43,7 +39,8 @@ export default function Page() {
           onClick={() => {
             setIsOpen(true);
           }}
-          className="md:w-44 w-full bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium">
+          className="md:w-44 w-full bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium"
+        >
           Enter Raffle
         </button>
       </div>
