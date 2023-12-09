@@ -9,33 +9,28 @@ import {
   Square3Stack3DIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { getTokens, getChainSvg } from "../components/constants/tokens";
+import {
+  getTokens,
+  getChainSvg,
+  getChainExplorer,
+} from "../components/constants/tokens";
 import Image from "next/image";
 import truncate from "../components/utils/truncate";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import {
-  createBucket,
-  getDeployedBuckets,
-} from "../components/utils/contract/contractCalls";
+import { createBucket } from "../components/utils/contract/contractCalls";
 import { useAccount } from "wagmi";
 import { getActiveToken } from "../components/utils/utils";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRandomColor } from "../components/data/randomColors";
-import Loading from "../loading";
-import { slice } from "viem";
 import html2canvas from "html2canvas";
 import {
   uploadImageUsingBuffer,
   uploadJson,
 } from "../components/utils/lightHouse/uploadToIpfs";
-import { createCanvas } from "canvas";
-import {
-  getBucketList,
-  getBucketPortfolioView,
-} from "../components/utils/subgraph/graph";
-import { useNetwork } from 'wagmi'
+import { getBucketList } from "../components/utils/subgraph/graph";
+import { useNetwork } from "wagmi";
+import toast from "react-hot-toast";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,7 +45,7 @@ export default function Page() {
   const [refreshData, setRefreshData] = useState(false);
   const [loadingBucket, setLoadingBucket] = useState(false);
 
-  const { chain, chains } = useNetwork()
+  const { chain, chains } = useNetwork();
 
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
 
@@ -66,14 +61,13 @@ export default function Page() {
   useEffect(() => {
     if (isConnected && chain) {
       setTokens(getTokens(chain?.id || 0));
-      setSelected(getTokens(chain?.id || 0)[0])
+      setSelected(getTokens(chain?.id || 0)[0]);
       setLoadingBucket(true);
       getDeployedBucketsWrapper();
     }
   }, [isConnected, refreshData, chain]);
 
   const getDeployedBucketsWrapper = async () => {
-
     const deployedBuckets = await getBucketList(chain?.id!);
     setBucketList(deployedBuckets);
     setLoadingBucket(false);
@@ -135,10 +129,29 @@ export default function Page() {
           bucketValue,
           chain?.id!
         );
-        // TODO : Add Toast
+
+        if (transactionHash) {
+          toast((t) => (
+            <span className="flex flex-col justify-center items-center">
+              Transaction Submitted Succesfullly!!!
+              <Link
+                href={`${getChainExplorer(chain?.id!)}${transactionHash}`}
+                target="_blank"
+                className="underline"
+              >
+                View on explorer
+              </Link>
+            </span>
+          ));
+
+          setTimeout(() => {
+            setRefreshData(!refreshData);
+          }, 6000);
+        } else {
+          toast.error("Something went wrong!!! Try again!!!");
+        }
 
         setPreviewNft(!previewNft);
-        setRefreshData(!refreshData);
         setIsOpen(false);
       });
     }
@@ -247,7 +260,10 @@ export default function Page() {
                             {bucket.tokenAllocations
                               .slice(0, 3)
                               .map((tokens: any, i: number) => {
-                                const _token = getActiveToken(tokens.token, chain?.id!);
+                                const _token = getActiveToken(
+                                  tokens.token,
+                                  chain?.id!
+                                );
                                 return (
                                   <Image
                                     key={i}
@@ -444,31 +460,42 @@ export default function Page() {
                         <h1 className="text-2xl font-medium">{bucketName}</h1>
                       </div>
                       <div className="grid items-center justify-center w-full grid-cols-2 gap-8">
-                        {selectedTokens.map((token: any, i: number) => {
-                          return (
-                            <div
-                              key={i}
-                              className="flex flex-row items-center justify-center gap-4 px-6 py-2 card"
-                            >
-                              <div>
-                                <img
-                                  src={token.icon}
-                                  alt={token.name}
-                                  height={40}
-                                  width={40}
-                                />
+                        {selectedTokens
+                          .slice(0, 4)
+                          .map((token: any, i: number) => {
+                            return (
+                              <div
+                                key={i}
+                                className="flex flex-row items-center justify-center gap-4 px-6 py-2 card"
+                              >
+                                <div>
+                                  <img
+                                    src={token.icon}
+                                    alt={token.name}
+                                    height={40}
+                                    width={40}
+                                  />
+                                </div>
+                                <div className="flex flex-row items-center justify-center gap-2">
+                                  <h3>{token.name}</h3>
+                                  <h3>
+                                    (
+                                    {getWeightageByTokenAddress(token.address) +
+                                      "%"}
+                                    )
+                                  </h3>
+                                </div>
                               </div>
-                              <div className="flex flex-row items-center justify-center gap-2">
-                                <h3>{token.name}</h3>
-                                <h3>
-                                  ({getWeightageByTokenAddress(token.address)})
-                                </h3>
-                              </div>
-                            </div>
-                          );
-                        })}
+                            );
+                          })}
                       </div>
+                      {selectedTokens.length > 4 && (
+                        <div className="flex justify-center items-center">
+                          {selectedTokens.length - 4} more
+                        </div>
+                      )}
                     </div>
+
                     <div className="flex items-center justify-center w-16 h-16 rounded-full shadow-md bg-primary">
                       <img
                         src={getChainSvg(chain?.id!)}

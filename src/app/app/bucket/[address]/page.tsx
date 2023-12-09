@@ -20,6 +20,7 @@ import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useAccount, useNetwork } from "wagmi";
+import toast from "react-hot-toast";
 
 export default function Page({
   params,
@@ -34,8 +35,7 @@ export default function Page({
   const [totalInvestedAmount, setTotalInvestedAmount] = useState(0);
   const { address, isConnected } = useAccount();
 
-  const { chain, chains } = useNetwork()
-
+  const { chain, chains } = useNetwork();
 
   useEffect(() => {
     if (isConnected && address && chain) {
@@ -45,7 +45,10 @@ export default function Page({
   }, [bucketAddress, params.address, isConnected, chain]);
 
   const getBucketDetailsWrapper = async (bucketAddress: string) => {
-    const _bucket = await getBucketDetailView(bucketAddress.toLowerCase(), chain?.id!);
+    const _bucket = await getBucketDetailView(
+      bucketAddress.toLowerCase(),
+      chain?.id!
+    );
     const _portfolio = await getBucketPortfolioView(
       bucketAddress.toLowerCase(),
       address!.toLocaleLowerCase(),
@@ -82,7 +85,7 @@ export default function Page({
       );
       console.log(invest);
     } else {
-      //toast
+      toast.error("Enter the USDC amount to Invest");
       console.log("Enter the USDC amount to Invest");
     }
     // }
