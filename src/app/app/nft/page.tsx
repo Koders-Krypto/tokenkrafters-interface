@@ -1,5 +1,9 @@
+'use client'
 import truncate from "@/app/components/utils/truncate";
+import html2canvas from 'html2canvas';
+
 import Image from "next/image";
+import { useEffect } from "react";
 export default function NFT() {
   const Data = [
     { icon: "/supported-tokens/dai.svg", name: "DAI", percentage: "20%" },
@@ -9,10 +13,44 @@ export default function NFT() {
     { icon: "/supported-tokens/wbnb.svg", name: "WBNB", percentage: "20%" },
     { icon: "/supported-tokens/wbnb.svg", name: "WBNB", percentage: "20%" },
   ];
+
+  useEffect(() => {
+    generateCanvas()
+  }, [])
+
+  const generateCanvas = async () => {
+    html2canvas(document.getElementById("nftImage")!).then(function (canvas) {
+      // document.body.appendChild(canvas);
+      simulateDownloadImageClick(canvas.toDataURL(), 'file-name.png');
+    });
+  }
+
+  function clickLink(link: any) {
+    link.click();
+  }
+
+  function simulateDownloadImageClick(uri: any, filename: string) {
+    var link = document.createElement('a');
+    if (typeof link.download !== 'string') {
+      window.open(uri);
+    } else {
+      link.href = uri;
+      link.download = filename;
+      accountForFirefox(clickLink(link));
+    }
+  }
+
+  function accountForFirefox(click: any) { // wrapper function
+    let link = arguments[1];
+    document.body.appendChild(link);
+    click(link);
+    document.body.removeChild(link);
+  }
+
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="w-[800px] h-[800px] bg-secondary rounded-2xl flex flex-col gap-8 justify-between items-center relative px-8 py-16 shadow-lg">
-        <Image
+      <div id="nftImage" className="w-[800px] h-[800px] bg-secondary flex flex-col gap-8 justify-between items-center relative px-8 py-16">
+        <img
           src={"/logo/TokenKrafters-Teal.png"}
           alt={"TokenKrafter Logo"}
           height="350"
@@ -30,7 +68,7 @@ export default function NFT() {
                   className="flex flex-row gap-4 card px-6 py-2 items-center justify-center"
                 >
                   <div>
-                    <Image
+                    <img
                       src={list.icon}
                       alt={list.name}
                       height={40}
@@ -48,8 +86,8 @@ export default function NFT() {
         </div>
         <div className="absolute right-4 top-4">
           <div className="bg-primary h-16 w-16 rounded-full shadow-md flex justify-center items-center">
-            <Image
-              src={"/supported-chains/Arbitrum.svg"}
+            <img
+              src={"/supported-tokens/dai.svg"}
               width={"40"}
               height={"40"}
               alt="Chain Icon"

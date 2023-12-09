@@ -156,4 +156,27 @@ const chainObj = {
   ],
 };
 
-export { Tokens, chainObj };
+const getChainSvg = (chainId: number) => {
+  switch (chainId) {
+    case 80001: // mumbai
+      return "/supported-tokens/dai.svg";
+    case 421613: // arb goerli
+      return "/supported-tokens/dai.svg";
+    case 44787: // celo
+      return "/supported-tokens/dai.svg";
+    case 8453: // base
+      return "/supported-tokens/dai.svg";
+    case 534352: // scroll
+      return "/supported-tokens/dai.svg";
+    default:
+      return "/supported-tokens/dai.svg"
+  }
+}
+
+const tokenSvgImage = "/supported-tokens/dai.svg";
+
+const factoryAddress = "0x442ab6d23c416d06258eaf89a9d31fa890e6a390";
+
+const paymentAddress = "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
+
+export { Tokens, chainObj, factoryAddress, paymentAddress, tokenSvgImage, getChainSvg };
