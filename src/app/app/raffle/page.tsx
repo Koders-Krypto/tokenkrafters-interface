@@ -1,14 +1,5 @@
-import { Tokens } from "@/app/components/constants/tokens";
 import truncate from "@/app/components/utils/truncate";
-import {
-  ArrowPathIcon,
-  BanknotesIcon,
-  BellAlertIcon,
-  ChartBarIcon,
-  QueueListIcon,
-  TicketIcon,
-  TrophyIcon,
-} from "@heroicons/react/24/solid";
+import { TicketIcon, TrophyIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 export default function Page() {
   return (

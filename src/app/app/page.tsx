@@ -3,11 +3,7 @@ import {
   BellAlertIcon,
   BoltIcon,
   ChartBarIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpDownIcon,
   MagnifyingGlassIcon,
-  PlusIcon,
   ScaleIcon,
   Square3Stack3DIcon,
   TrashIcon,
@@ -20,7 +16,6 @@ import { Fragment, useEffect, useState } from "react";
 import {
   createBucket,
   getDeployedBuckets,
-  readContract,
 } from "../components/utils/contract/contractCalls";
 import { useAccount } from "wagmi";
 import { getTokens } from "../components/utils/utils";
