@@ -57,13 +57,8 @@ export const getBucketDetailView = async (address: string) => {
     const data = {
         query: graphqlQuery,
     };
-    axios.post(apiUrl, graphqlQuery, axiosConfig)
-        .then((response: AxiosResponse<GraphQLResponse>) => {
-            console.log('GraphQL Response:', response.data);
-        })
-        .catch((error: AxiosError) => {
-            console.error('GraphQL Error:', error);
-        });
+    const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+    return response.data.data.bucket;
 }
 
 export const getBucketPortfolioView = async (bucketAddress: string, userAddress: string) => {

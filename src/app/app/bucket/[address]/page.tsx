@@ -42,6 +42,7 @@ export default function Page({
   const getBucketDetailsWrapper = async (bucketAddress: string) => {
     const _bucket = await getBucketDetailView(bucketAddress.toLowerCase());
     const _portfolio = await getBucketPortfolioView(bucketAddress.toLowerCase(), address!.toLocaleLowerCase())
+    console.log(_portfolio);
     setBucket(_bucket);
     setPortfolio(_portfolio);
   };
@@ -76,18 +77,18 @@ export default function Page({
                 className={`h-36 flex justify-center items-center rounded-md text-white w-36 ${getRandomColor()}`}
               >
                 <h2 className="text-7xl uppercase">
-                  {bucket.bucketName.charAt(1)}
+                  {bucket.name.charAt(1)}
                 </h2>
               </div>
               <div className="flex flex-col justify-start gap-4 items-start">
                 <div className="flex flex-col gap-1">
-                  <h2 className="font-medium text-2xl">{bucket.bucketName}</h2>
+                  <h2 className="font-medium text-2xl">{bucket.name}</h2>
                   <h3 className="text-sm">
-                    Bucket Address {truncate(bucket.bucketAddress, 12, "...")}
+                    Bucket Address {truncate(bucket.id, 12, "...")}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-start items-center max-w-lg gap-2">
-                  <p>{bucket.bucketDescription}</p>
+                  <p>{bucket.description}</p>
                 </div>
               </div>
             </div>
@@ -116,8 +117,8 @@ export default function Page({
                 </h2>
               </div>
               <div className="grid grid-cols-4 gap-4 w-full">
-                {bucket.bucketTokens.map((token: any, i: number) => {
-                  const _token = getTokens(token.tokenAddress);
+                {bucket.tokenAllocations.map((token: any, i: number) => {
+                  const _token = getTokens(token.token);
                   return (
                     <div
                       className="card flex flex-col gap-2 justify-center items-center p-4"
@@ -131,7 +132,7 @@ export default function Page({
                         width={"30"}
                       />
                       <h3 className="text-lg font-semibold">
-                        {_token.name} ({Number(token.weightage) / 1000}%)
+                        {_token.name} ({parseInt(token.weightage) / 1000}%)
                       </h3>
                     </div>
                   );
