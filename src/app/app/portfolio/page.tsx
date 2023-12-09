@@ -82,7 +82,10 @@ export default function Portfolio() {
               <div>Amount ($)</div>
               <div className="flex items-center justify-center">Actions</div>
             </div>
-            {portfolio.map((item: any, index: number) => {
+            {portfolio.length <= 0 && (
+              <div className="text-white">Porfolio is empty!!!</div>
+            )}
+            {portfolio?.map((item: any, index: number) => {
               return (
                 <div
                   key={index}
@@ -96,16 +99,6 @@ export default function Portfolio() {
                       Withdraw
                     </button>
                   </div>
-                  {/* <div className="w-full truncate">
-                  {truncate(
-                    "0xfa9068fa87219f52b4017dfa0fcc9d5b2495017491f8533aa387f816cc2efaf5",
-                    22,
-                    "..."
-                  )}
-                </div>
-                <div>
-                  <button className="text-primary">Link</button>
-                </div> */}
                 </div>
               );
             })}
