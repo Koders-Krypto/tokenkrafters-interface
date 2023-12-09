@@ -25,6 +25,7 @@ import { getRandomColor } from "../components/data/randomColors";
 import html2canvas from 'html2canvas';
 import { uploadImageUsingBuffer, uploadJson } from "../components/utils/lightHouse/uploadToIpfs";
 import { createCanvas } from 'canvas';
+import { getBucketList, getBucketPortfolioView } from "../components/utils/subgraph/graph";
 
 
 
@@ -55,12 +56,13 @@ export default function Page() {
 
   useEffect(() => {
     if (isConnected) {
+
       getDeployedBucketsWrapper();
     }
   }, [isConnected, refreshData]);
 
   const getDeployedBucketsWrapper = async () => {
-    const deployedBuckets = await getDeployedBuckets();
+    const deployedBuckets = await getBucketList();
     setBucketList(deployedBuckets);
   };
 
@@ -90,27 +92,14 @@ export default function Page() {
 
   const handleCreateBucket = async () => {
     if (isConnected) {
-
       const htmlContent = document.getElementById("nftImageBody")!;
-
-      // Create a canvas using node-canvas
-      // const canvas = createCanvas(800, 600);
-
-      // Draw the HTML content onto the canvas using html2canvas
       const canvas = await html2canvas(htmlContent);
-
       canvas.toBlob(async (blob) => {
-        // Create a File from the Blob
         const file = new File([blob!], 'capturedImage.png', { type: 'image/png' });
-
-        // Log the File (simulating Buffer-like data)
-        console.log(file);
-
         const nftImageHash = await uploadImageUsingBuffer(file);
-
         let newArray = bucketValue.map(({ tokenAddress, weightage }: any) => ({
-          name: getTokens(tokenAddress).name, // Change key name
-          value: Number(weightage) / 1000, // Change key name
+          name: getTokens(tokenAddress).name,
+          value: Number(weightage) / 1000,
         }));
         const metadata = {
           "description": bucketDescription,
@@ -120,17 +109,13 @@ export default function Page() {
           "attributes": newArray
         }
         const lightHouseHash = await uploadJson(metadata);
+        const transactionHash = await createBucket(bucketName, bucketDescription, lightHouseHash, bucketValue);
+        // TODO : Add Toast
 
-        console.log(lightHouseHash);
-
-        await createBucket(bucketName, bucketDescription, lightHouseHash, bucketValue);
         setPreviewNft(!previewNft);
         setRefreshData(!refreshData);
         setIsOpen(false);
       });
-
-
-      // redirect to home page
     }
   };
 
@@ -198,13 +183,9 @@ export default function Page() {
         {isConnected && bucketList ? (
           <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
             {bucketList.map((bucket: any, index: number) => {
-              function randomColors() {
-                throw new Error("Function not implemented.");
-              }
-
               return (
                 <Link
-                  href={`/app/bucket/${bucket.bucketAddress}`}
+                  href={`/app/bucket/${bucket.id}`}
                   key={index}
                   className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer"
                 >
@@ -214,15 +195,15 @@ export default function Page() {
                         className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
                       >
                         <h2 className="text-5xl uppercase">
-                          {bucket?.bucketName?.charAt(1)}
+                          {bucket?.name?.charAt(1)}
                         </h2>
                       </div>
                       <div className="flex flex-col justify-start items-start">
                         <h2 className="font-medium text-lg">
-                          {bucket.bucketName}
+                          {bucket.name}
                         </h2>
                         <h3 className="text-sm">
-                          by {truncate(bucket.bucketAddress, 12, "...")}
+                          by {truncate(bucket.id, 12, "...")}
                         </h3>
                       </div>
                     </div>
@@ -231,8 +212,8 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="flex flex-row justify-start items-center gap-2">
-                    {bucket.bucketTokens.map((tokens: any, i: number) => {
-                      const _token = getTokens(tokens.tokenAddress);
+                    {bucket.tokenAllocations.map((tokens: any, i: number) => {
+                      const _token = getTokens(tokens.token);
                       return (
                         <Image
                           key={i}
