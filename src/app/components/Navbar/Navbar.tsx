@@ -80,7 +80,7 @@ const Navbar = () => {
                       >
                         {link.name}
                         {pathname === link.link ? (
-                          <span className="w-2 h-1 bg-white rounded-full"></span>
+                          <span className="w-2 h-1 bg-primary rounded-full"></span>
                         ) : (
                           <span className="w-2 h-1 bg-transparent rounded-full"></span>
                         )}
@@ -144,7 +144,7 @@ const Navbar = () => {
                       href={link.link}
                       className={`flex flex-row justify-start py-5 items-start px-8 gap-8 w-full ${
                         pathname === link.link
-                          ? "bg-[#1C4185]  border-l-4 border-accent"
+                          ? "bg-secondary  border-l-4 border-primary"
                           : "border-l-4 border-transparent"
                       }`}
                       key={i}

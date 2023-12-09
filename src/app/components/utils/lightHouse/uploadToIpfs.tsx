@@ -1,15 +1,17 @@
-const apiKey = "2fa66373.2858c97b7400495bbe8dbf9a5cd7d12d";
+const apiKey = "c6da2639.48df819445774731bd05d0e61dafbdd3";
 
 import lighthouse from '@lighthouse-web3/sdk'
 import axios from 'axios';
 
-export const uploadImageUsingBuffer = async (buffer: Buffer) => {
-    const uploadResponse = await lighthouse.uploadBuffer(buffer, apiKey)
-    const fileHash = await fetchActualHash(uploadResponse.data.Hash)
-    return fileHash;
+export const uploadImageUsingBuffer = async (buffer: any) => {
+    const uploadResponse = await lighthouse.uploadBuffer(buffer, apiKey);
+    console.log(uploadResponse.data.Hash);
+    // const fileHash = await fetchActualHash(uploadResponse.data.Hash)
+    return uploadResponse.data.Hash;
 }
 
-export const uploadJson = async (metadata: JSON) => {
+export const uploadJson = async (metadata: any) => {
+    console.log(metadata);
     const response = await lighthouse.uploadText(JSON.stringify(metadata), apiKey);
     return response.data.Hash;
 }

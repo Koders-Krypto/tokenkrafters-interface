@@ -3,16 +3,12 @@ import {
   BellAlertIcon,
   BoltIcon,
   ChartBarIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpDownIcon,
   MagnifyingGlassIcon,
-  PlusIcon,
   ScaleIcon,
   Square3Stack3DIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { Tokens } from "../components/constants/tokens";
+import { Tokens, tokenSvgImage } from "../components/constants/tokens";
 import Image from "next/image";
 import truncate from "../components/utils/truncate";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
@@ -20,9 +16,17 @@ import { Fragment, useEffect, useState } from "react";
 import {
   createBucket,
   getDeployedBuckets,
-  readContract,
 } from "../components/utils/contract/contractCalls";
 import { useAccount } from "wagmi";
+import { getTokens } from "../components/utils/utils";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { getRandomColor } from "../components/data/randomColors";
+import html2canvas from 'html2canvas';
+import { uploadImageUsingBuffer, uploadJson } from "../components/utils/lightHouse/uploadToIpfs";
+import { createCanvas } from 'canvas';
+
+
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,17 +36,32 @@ export default function Page() {
   const [bucketDescription, setBucketDescription] = useState("");
   const [bucketName, setBucketName] = useState("");
   const [bucketValue, setBucketValue] = useState<any>([]);
+  const [bucketList, setBucketList] = useState<any>([]);
+  const [previewNft, setPreviewNft] = useState(false);
+  const [refreshData, setRefreshData] = useState(false);
+
+  const router = useRouter();
 
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+
+  useEffect(() => {
+    if (previewNft === true) {
+
+      // html2canvas(document.getElementById("nftImageBody")!).then(function (canvas) {
+      handleCreateBucket();
+      // });
+    }
+  }, [previewNft])
 
   useEffect(() => {
     if (isConnected) {
       getDeployedBucketsWrapper();
     }
-  }, [isConnected]);
+  }, [isConnected, refreshData]);
 
   const getDeployedBucketsWrapper = async () => {
-    await getDeployedBuckets();
+    const deployedBuckets = await getDeployedBuckets();
+    setBucketList(deployedBuckets);
   };
 
   const handleTokenInput = (e: any, token: any) => {
@@ -56,7 +75,6 @@ export default function Page() {
       }
     }
     if (!updated) {
-      console.log("called");
       _bucketValue.push({
         tokenAddress: token.address,
         weightage: BigInt(e.target.value * 1000),
@@ -65,19 +83,54 @@ export default function Page() {
     setBucketValue(_bucketValue);
   };
 
-  const getTokenPercentage = (token: any) => {
-    for (let i = 0; i < bucketValue.length; i++) {
-      console.log(bucketValue[i][1]);
-      if (bucketValue[i][0] === token.address && bucketValue[i][1] !== 0) {
-        return bucketValue[i][1];
-      }
-    }
-    return "";
-  };
+  function getWeightageByTokenAddress(searchTokenAddress: string) {
+    const foundObject = bucketValue.find(({ tokenAddress }: { tokenAddress: string }) => tokenAddress === searchTokenAddress);
+    return foundObject ? Number(foundObject.weightage) / 1000 : null;
+  }
 
   const handleCreateBucket = async () => {
     if (isConnected) {
-      await createBucket(bucketName, bucketDescription, "", bucketValue);
+
+      const htmlContent = document.getElementById("nftImageBody")!;
+
+      // Create a canvas using node-canvas
+      // const canvas = createCanvas(800, 600);
+
+      // Draw the HTML content onto the canvas using html2canvas
+      const canvas = await html2canvas(htmlContent);
+
+      canvas.toBlob(async (blob) => {
+        // Create a File from the Blob
+        const file = new File([blob!], 'capturedImage.png', { type: 'image/png' });
+
+        // Log the File (simulating Buffer-like data)
+        console.log(file);
+
+        const nftImageHash = await uploadImageUsingBuffer(file);
+
+        let newArray = bucketValue.map(({ tokenAddress, weightage }: any) => ({
+          name: getTokens(tokenAddress).name, // Change key name
+          value: Number(weightage) / 1000, // Change key name
+        }));
+        const metadata = {
+          "description": bucketDescription,
+          "external_url": "https://gateway.lighthouse.storage/ipfs/" + nftImageHash,
+          "image": "https://gateway.lighthouse.storage/ipfs/" + nftImageHash,
+          "name": bucketName,
+          "attributes": newArray
+        }
+        const lightHouseHash = await uploadJson(metadata);
+
+        console.log(lightHouseHash);
+
+        await createBucket(bucketName, bucketDescription, lightHouseHash, bucketValue);
+        setPreviewNft(!previewNft);
+        setRefreshData(!refreshData);
+        setIsOpen(false);
+      });
+
+
+      // redirect to home page
     }
   };
 
@@ -142,45 +195,65 @@ export default function Page() {
           <Square3Stack3DIcon className="h-6 w-6 text-primary" />
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
-          <div className="card p-6 rounded-lg shadow-xl flex flex-col gap-4">
-            <div className="flex flex-row justify-between items-start">
-              <div className="flex flex-col justify-start items-start gap-2">
-                <div className="h-14 flex justify-center items-center rounded-md text-white w-14 bg-green-900">
-                  <h2 className="text-5xl">B</h2>
-                </div>
-                <div className="flex flex-col justify-start items-start">
-                  <h2 className="font-medium text-lg">Balanced Case</h2>
-                  <h3 className="text-sm">
-                    by{" "}
-                    {truncate(
-                      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                      12,
-                      "..."
-                    )}
-                  </h3>
-                </div>
-              </div>
-              <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
-                Trending
-              </div>
-            </div>
-            <div className="flex flex-row justify-start items-center gap-2">
-              {tokens.map((token, i) => {
-                return (
-                  <Image
-                    key={i}
-                    src={token.icon}
-                    alt={token.name}
-                    height={"30"}
-                    width={"30"}
-                  />
-                );
-              })}
-              <h5>+2</h5>
-            </div>
+        {isConnected && bucketList ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
+            {bucketList.map((bucket: any, index: number) => {
+              function randomColors() {
+                throw new Error("Function not implemented.");
+              }
+
+              return (
+                <Link
+                  href={`/app/bucket/${bucket.bucketAddress}`}
+                  key={index}
+                  className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer"
+                >
+                  <div className="flex flex-row justify-between items-start">
+                    <div className="flex flex-col justify-start items-start gap-2">
+                      <div
+                        className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
+                      >
+                        <h2 className="text-5xl uppercase">
+                          {bucket?.bucketName?.charAt(1)}
+                        </h2>
+                      </div>
+                      <div className="flex flex-col justify-start items-start">
+                        <h2 className="font-medium text-lg">
+                          {bucket.bucketName}
+                        </h2>
+                        <h3 className="text-sm">
+                          by {truncate(bucket.bucketAddress, 12, "...")}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
+                      Trending
+                    </div>
+                  </div>
+                  <div className="flex flex-row justify-start items-center gap-2">
+                    {bucket.bucketTokens.map((tokens: any, i: number) => {
+                      const _token = getTokens(tokens.tokenAddress);
+                      return (
+                        <Image
+                          key={i}
+                          src={_token!.icon}
+                          alt={_token!.name}
+                          height={"30"}
+                          width={"30"}
+                        />
+                      );
+                    })}
+                    {/* <h5>+2</h5> */}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-        </div>
+        ) : (
+          <h3 className="text-lg text-primary">
+            Connect Wallet to load the buckets!!!
+          </h3>
+        )}
       </div>
       <Transition
         enter="transition-opacity duration-75"
@@ -199,13 +272,12 @@ export default function Page() {
         >
           {/* The backdrop, rendered as a fixed sibling to the panel container */}
           <div className="fixed inset-0 bg-secondary/90" aria-hidden="true" />
-
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 w-screen overflow-y-auto">
             {/* Container to center the panel */}
             <div className="flex min-h-full items-center justify-center p-4">
               {/* The actual dialog panel  */}
-              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
+              {!previewNft ? <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
                 <Dialog.Title className={"text-2xl font-semibold"}>
                   Create your own bucket
                 </Dialog.Title>
@@ -306,16 +378,64 @@ export default function Page() {
                   <div className="flex flex-row justify-end items-center mt-8">
                     <button
                       className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
-                      onClick={() => handleCreateBucket()}
+                      onClick={() => setPreviewNft(!previewNft)}
                     >
                       Create
                     </button>
                   </div>
                 </div>
                 {/* ... */}
-              </Dialog.Panel>
+              </Dialog.Panel> :
+                <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
+                  <div id="nftImageBody" className="w-[800px] h-[800px] bg-secondary flex flex-col gap-8 justify-between items-center px-8 py-16">
+                    <img
+                      src={"/logo/TokenKrafters-Teal.png"}
+                      alt={"TokenKrafter Logo"}
+                      height="350"
+                      width="350"
+                    />
+                    <div className="flex flex-col justify-center items-center gap-8">
+                      <div className="text-2xl font-medium">
+                        <h1 className="text-2xl font-medium">{bucketName}</h1>
+                      </div>
+                      <div className="grid grid-cols-2 w-full gap-12 justify-center items-center">
+                        {selectedTokens.map((token: any, i: number) => {
+                          return (
+                            <div
+                              key={i}
+                              className="flex flex-row gap-4 card px-6 py-2 items-center justify-center"
+                            >
+                              <div>
+                                <img
+                                  src={token.icon}
+                                  alt={token.name}
+                                  height={40}
+                                  width={40}
+                                />
+                              </div>
+                              <div className="flex flex-row gap-2 justify-center items-center">
+                                <h3>{token.name}</h3>
+                                <h3>({getWeightageByTokenAddress(token.address)})</h3>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <div className="bg-primary h-16 w-16 rounded-full shadow-md flex justify-center items-center">
+                      <img
+                        src={tokenSvgImage}
+                        width={"40"}
+                        height={"40"}
+                        alt="Chain Icon"
+                      />
+                    </div>
+                  </div>
+                </Dialog.Panel>}
             </div>
           </div>
+
+
         </Dialog>
       </Transition>
     </div>
