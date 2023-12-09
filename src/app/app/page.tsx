@@ -25,6 +25,8 @@ import {
 import { useAccount } from "wagmi";
 import { getTokens } from "../components/utils/utils";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { getRandomColor } from "../components/data/randomColors";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -149,53 +151,65 @@ export default function Page() {
           <Square3Stack3DIcon className="h-6 w-6 text-primary" />
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
-          {bucketList.map((bucket: any, index: number) => {
-            return (
-              <div onClick={() => router.push("/app/bucket/" + bucket.bucketAddress)} className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer">
-                <div className="flex flex-row justify-between items-start">
-                  <div className="flex flex-col justify-start items-start gap-2">
-                    <div className="h-14 flex justify-center items-center rounded-md text-white w-14 bg-green-900">
-                      <h2 className="text-5xl">B</h2>
+        {isConnected && bucketList ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
+            {bucketList.map((bucket: any, index: number) => {
+              function randomColors() {
+                throw new Error("Function not implemented.");
+              }
+
+              return (
+                <Link
+                  href={`/app/bucket/${bucket.bucketAddress}`}
+                  key={index}
+                  className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer"
+                >
+                  <div className="flex flex-row justify-between items-start">
+                    <div className="flex flex-col justify-start items-start gap-2">
+                      <div
+                        className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
+                      >
+                        <h2 className="text-5xl uppercase">
+                          {bucket?.bucketName?.charAt(1)}
+                        </h2>
+                      </div>
+                      <div className="flex flex-col justify-start items-start">
+                        <h2 className="font-medium text-lg">
+                          {bucket.bucketName}
+                        </h2>
+                        <h3 className="text-sm">
+                          by {truncate(bucket.bucketAddress, 12, "...")}
+                        </h3>
+                      </div>
                     </div>
-                    <div className="flex flex-col justify-start items-start">
-                      <h2 className="font-medium text-lg">{bucket.name}</h2>
-                      <h3 className="text-sm">
-                        by{" "}
-                        {truncate(
-                          bucket.bucketAddress,
-                          12,
-                          "..."
-                        )}
-                      </h3>
+                    <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
+                      Trending
                     </div>
                   </div>
-                  <div className="bg-primary/90 text-secondary px-4 py-1 rounded-md shadow-sm font-medium">
-                    Trending
+                  <div className="flex flex-row justify-start items-center gap-2">
+                    {bucket.bucketTokens.map((tokens: any, i: number) => {
+                      const _token = getTokens(tokens.tokenAddress);
+                      return (
+                        <Image
+                          key={i}
+                          src={_token!.icon}
+                          alt={_token!.name}
+                          height={"30"}
+                          width={"30"}
+                        />
+                      );
+                    })}
+                    {/* <h5>+2</h5> */}
                   </div>
-                </div>
-                <div className="flex flex-row justify-start items-center gap-2">
-                  {bucket.bucketTokens.map((tokens: any, i: number) => {
-                    const _token = getTokens(tokens.tokenAddress);
-                    return (
-                      <Image
-                        key={i}
-                        src={_token!.icon}
-                        alt={_token!.name}
-                        height={"30"}
-                        width={"30"}
-                      />
-                    );
-                  })}
-                  {/* <h5>+2</h5> */}
-                </div>
-              </div>
-            )
-          })}
-
-
-
-        </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <h3 className="text-lg text-primary">
+            Connect Wallet to load the buckets!!!
+          </h3>
+        )}
       </div>
       <Transition
         enter="transition-opacity duration-75"

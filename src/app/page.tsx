@@ -1,27 +1,50 @@
 import Image from "next/image";
 import Link from "next/link";
 import Chains from "@/app/components/data/chains.json";
+import { ChevronDownIcon } from "@heroicons/react/24/solid";
 export default function Home() {
-  const Data = [
+  const Section1 = [
     {
-      icon: "/icons/Investing.png",
-      name: "Clear & Simple Investing:",
+      icon: "/icons/section-1/Investing.png",
+      name: "Clear & Simple Investing",
       desc: "Discover the clarity of modern crypto portfolios with TokenKrafters – where simplicity meets smart investing, making the crypto landscape accessible to all. Expert-Crafted Strategies:",
     },
     {
-      icon: "/icons/Strategy.png",
-      name: "Expert-Crafted Strategies:",
+      icon: "/icons/section-1/Strategy.png",
+      name: "Expert-Crafted Strategies",
       desc: "Unlock the power of expert insights with TokenKrafters, as our crypto portfolios are meticulously crafted by industry professionals, ensuring a foundation rooted in comprehensive research.",
     },
     {
-      icon: "/icons/Crypto.png",
-      name: "Your Crypto, Your Way:",
+      icon: "/icons/section-1/Crypto.png",
+      name: "Your Crypto, Your Way",
       desc: "Experience the freedom of personalized crypto investments with TokenKrafters. Tailor your portfolio effortlessly, creating a unique strategy that aligns perfectly with your financial goals.",
+    },
+  ];
+  const Section2 = [
+    {
+      icon: "/icons/section-2/stability.png",
+      name: "Stability",
+      desc: "Go for stable returns at low volatility levels",
+    },
+    {
+      icon: "/icons/section-2/explore.png",
+      name: "Explore",
+      desc: "Explore portfolios on disruptive ideas & long-term trends",
+    },
+    {
+      icon: "/icons/section-2/low.png",
+      name: "Low Inv. Amount",
+      desc: "Start with any amount of investment you desire",
+    },
+    {
+      icon: "/icons/section-2/tracking.png",
+      name: "Trackers",
+      desc: "Take exposure to important sectors using buckets",
     },
   ];
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 pt-24 md:p-24">
+      <main className="flex min-h-[95vh] flex-col items-center justify-center p-6 pt-24 md:p-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           <div className="flex flex-col gap-8 justify-center items-start">
             <div className="flex flex-col gap-8 justify-center items-start">
@@ -68,7 +91,13 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <section className="md:px-24 p-6 flex flex-col justify-center items-center">
+      <a href="#below" className="flex justify-center items-center">
+        <ChevronDownIcon className="h-10 w-10 animate-bounce" />
+      </a>
+      <section
+        className="md:px-24 p-6 flex flex-col justify-center items-center py-12 md:py-36"
+        id="below"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 place-content-center place-items-center gap-12 w-full">
           <div className="flex flex-col gap-2">
             <h2 className="gradient-title text-4xl md:text-5xl">
@@ -79,31 +108,62 @@ export default function Home() {
               Themes, Strategies and Objectives.
             </h3>
           </div>
-          <div className="flex flex-col gap-12">
-            {Data.map((list, i) => {
+          <div className="flex flex-col gap-20">
+            {Section1.map((list, i) => {
               return (
                 <div
                   className="flex flex-row gap-6 justify-center items-center"
                   key={i}
                 >
-                  <div>
-                    <Image
-                      src={list.icon}
-                      alt={list.name}
-                      width={"300"}
-                      height={"300"}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
+                  <Image
+                    src={list.icon}
+                    alt={list.name}
+                    width={"100"}
+                    height={"100"}
+                  />
+
+                  <div className="flex flex-col gap-1">
                     <h4 className="font-medium text-2xl text-primary">
                       {list.name}
                     </h4>
-                    <h5 className="text-base font-light">{list.desc}</h5>
+                    <h5 className="text-base">{list.desc}</h5>
                   </div>
                 </div>
               );
             })}
           </div>
+        </div>
+      </section>
+      <section className="md:px-24 p-6 flex flex-col justify-center gap-8 items-center py-12 md:py-36">
+        <div className="flex flex-col justify-center items-center gap-2">
+          <h2 className="gradient-title text-3xl md:text-4xl">
+            There is a Krafted Token Bucket for everyone
+          </h2>
+          <p className="text-xl">
+            Looking to start with a small investment or thinking of low
+            volatililty? Choose from a diverse menu
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 w-full">
+          {Section2.map((card, k) => {
+            return (
+              <div
+                key={k}
+                className="bg-secondary/50 border border-white rounded-xl flex flex-col gap-4 items-center md:text-left text-center md:items-start justify-center p-6"
+              >
+                <Image
+                  src={card.icon}
+                  alt={card.name}
+                  height={"100"}
+                  width={"100"}
+                />
+                <h3 className="font-medium text-xl text-primary">
+                  {card.name}
+                </h3>
+                <h5 className="text-base font-light">{card.desc}</h5>
+              </div>
+            );
+          })}
         </div>
       </section>
     </>
