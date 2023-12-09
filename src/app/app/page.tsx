@@ -65,6 +65,7 @@ export default function Page() {
 
   const getDeployedBucketsWrapper = async () => {
     const deployedBuckets = await getBucketList();
+    console.log(deployedBuckets);
     setBucketList(deployedBuckets);
     setLoadingBucket(false);
   };
@@ -218,7 +219,7 @@ export default function Page() {
 
                     return (
                       <Link
-                        href={`/app/bucket/${bucket.bucketAddress}`}
+                        href={`/app/bucket/${bucket.id}`}
                         key={index}
                         className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer"
                       >
@@ -228,23 +229,23 @@ export default function Page() {
                               className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
                             >
                               <h2 className="text-5xl uppercase">
-                                {bucket?.bucketName?.charAt(1)}
+                                {bucket?.name?.charAt(1)}
                               </h2>
                             </div>
                             <div className="flex flex-col justify-start items-start">
                               <h2 className="font-medium text-lg">
-                                {bucket.bucketName}
+                                {bucket.name}
                               </h2>
                               <h3 className="text-sm">
-                                by {truncate(bucket.bucketAddress, 12, "...")}
+                                by {truncate(bucket.id, 12, "...")}
                               </h3>
                             </div>
                           </div>
                           <div className="flex flex-row justify-start items-center gap-2">
-                            {bucket.bucketTokens
+                            {bucket.tokenAllocations
                               .slice(0, 5)
                               .map((tokens: any, i: number) => {
-                                const _token = getTokens(tokens.tokenAddress);
+                                const _token = getTokens(tokens.token);
                                 return (
                                   <Image
                                     key={i}
@@ -255,8 +256,8 @@ export default function Page() {
                                   />
                                 );
                               })}
-                            {bucket?.buckerTokens?.length > 5 && (
-                              <h5>{bucket?.bucketTokens?.length - 5}+</h5>
+                            {bucket?.tokenAllocations?.length > 5 && (
+                              <h5>{bucket?.tokenAllocations?.length - 5}+</h5>
                             )}
                           </div>
                         </div>
