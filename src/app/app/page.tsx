@@ -24,12 +24,16 @@ import Link from "next/link";
 import { getRandomColor } from "../components/data/randomColors";
 import Loading from "../loading";
 import { slice } from "viem";
-import html2canvas from 'html2canvas';
-import { uploadImageUsingBuffer, uploadJson } from "../components/utils/lightHouse/uploadToIpfs";
-import { createCanvas } from 'canvas';
-import { getBucketList, getBucketPortfolioView } from "../components/utils/subgraph/graph";
-
-
+import html2canvas from "html2canvas";
+import {
+  uploadImageUsingBuffer,
+  uploadJson,
+} from "../components/utils/lightHouse/uploadToIpfs";
+import { createCanvas } from "canvas";
+import {
+  getBucketList,
+  getBucketPortfolioView,
+} from "../components/utils/subgraph/graph";
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -102,7 +106,9 @@ export default function Page() {
       const htmlContent = document.getElementById("nftImageBody")!;
       const canvas = await html2canvas(htmlContent);
       canvas.toBlob(async (blob) => {
-        const file = new File([blob!], 'capturedImage.png', { type: 'image/png' });
+        const file = new File([blob!], "capturedImage.png", {
+          type: "image/png",
+        });
         const nftImageHash = await uploadImageUsingBuffer(file);
         let newArray = bucketValue.map(({ tokenAddress, weightage }: any) => ({
           name: getTokens(tokenAddress).name,
@@ -117,7 +123,12 @@ export default function Page() {
           attributes: newArray,
         };
         const lightHouseHash = await uploadJson(metadata);
-        const transactionHash = await createBucket(bucketName, bucketDescription, lightHouseHash, bucketValue);
+        const transactionHash = await createBucket(
+          bucketName,
+          bucketDescription,
+          lightHouseHash,
+          bucketValue
+        );
         // TODO : Add Toast
 
         setPreviewNft(!previewNft);
@@ -188,7 +199,7 @@ export default function Page() {
           <Square3Stack3DIcon className="h-6 w-6 text-primary" />
           <h2 className="text-primary font-semibold text-xl">All Collection</h2>
         </div>
-        {isConnected && bucketList ? (
+        {isConnected ? (
           <>
             {loadingBucket ? (
               <>
@@ -213,10 +224,6 @@ export default function Page() {
               <>
                 <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
                   {bucketList.map((bucket: any, index: number) => {
-                    function randomColors() {
-                      throw new Error("Function not implemented.");
-                    }
-
                     return (
                       <Link
                         href={`/app/bucket/${bucket.id}`}
@@ -236,8 +243,9 @@ export default function Page() {
                               <h2 className="font-medium text-lg">
                                 {bucket.name}
                               </h2>
+
                               <h3 className="text-sm">
-                                by {truncate(bucket.id, 12, "...")}
+                                by {truncate(bucket.creator.id, 12, "...")}
                               </h3>
                             </div>
                           </div>

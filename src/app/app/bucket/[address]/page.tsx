@@ -1,12 +1,12 @@
 "use client";
 import Chart from "@/app/components/Chart/Chart";
-import { Tokens, paymentAddress } from "@/app/components/constants/tokens";
+import { paymentAddress } from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
+import { investInBucket } from "@/app/components/utils/contract/contractCalls";
 import {
-  getBucketDetails,
-  investInBucket,
-} from "@/app/components/utils/contract/contractCalls";
-import { getBucketDetailView, getBucketPortfolioView } from "@/app/components/utils/subgraph/graph";
+  getBucketDetailView,
+  getBucketPortfolioView,
+} from "@/app/components/utils/subgraph/graph";
 import truncate from "@/app/components/utils/truncate";
 import { getTokens } from "@/app/components/utils/utils";
 import Loading from "@/app/loading";
@@ -31,17 +31,21 @@ export default function Page({
   const [portfolio, setPortfolio] = useState<any>();
   const [value, setValue] = useState("");
 
-  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   useEffect(() => {
     if (isConnected && address) {
       getBucketDetailsWrapper(bucketAddress);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bucketAddress, params.address, isConnected]);
 
   const getBucketDetailsWrapper = async (bucketAddress: string) => {
     const _bucket = await getBucketDetailView(bucketAddress.toLowerCase());
-    const _portfolio = await getBucketPortfolioView(bucketAddress.toLowerCase(), address!.toLocaleLowerCase())
+    const _portfolio = await getBucketPortfolioView(
+      bucketAddress.toLowerCase(),
+      address!.toLocaleLowerCase()
+    );
     console.log(_portfolio);
     setBucket(_bucket);
     setPortfolio(_portfolio);
@@ -76,19 +80,21 @@ export default function Page({
               <div
                 className={`h-36 flex justify-center items-center rounded-md text-white w-36 ${getRandomColor()}`}
               >
-                <h2 className="text-7xl uppercase">
-                  {bucket.name.charAt(1)}
-                </h2>
+                <h2 className="text-7xl uppercase">{bucket.name.charAt(1)}</h2>
               </div>
               <div className="flex flex-col justify-start gap-4 items-start">
                 <div className="flex flex-col gap-1">
                   <h2 className="font-medium text-2xl">{bucket.name}</h2>
                   <h3 className="text-sm">
-                    Bucket Address {truncate(bucket.id, 12, "...")}
+                    Bucket Address {truncate(bucket.creator.id, 12, "...")}
                   </h3>
                 </div>
                 <div className="flex flex-row justify-start items-center max-w-lg gap-2">
                   <p>{bucket.description}</p>
+                </div>
+                <div className="flex flex-col justify-center items-center bg-primary px-4 py-2 rounded-xl shadow-xl text-secondary font-semibold text-lg">
+                  <h3 className="text-sm font-normal">You Invested</h3>
+                  <h4>${portfolio[0].investmentAmount / 1000}</h4>
                 </div>
               </div>
             </div>
@@ -180,12 +186,7 @@ export default function Page({
                       type="button"
                       className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                     >
-                      by{" "}
-                      {truncate(
-                        "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-                        24,
-                        "..."
-                      )}
+                      by {truncate(bucket.creator.id, 24, "...")}
                     </button>
                   </div>
                 </div>
@@ -205,11 +206,14 @@ export default function Page({
 
                   <div className="grow pt-0.5 pb-8">
                     <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-                      Take a break ⛳️
+                      First Investment
                     </h3>
-                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                      Just chill for now... 😉
-                    </p>
+                    <button
+                      type="button"
+                      className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                    >
+                      by {truncate(bucket.creator.id, 24, "...")}
+                    </button>
                   </div>
                 </div>
               </div>
