@@ -1,9 +1,9 @@
-const Tokens = [
+const ArbitrumTokens = [
   {
     name: "WBTC",
     icon: "/supported-tokens/wbtc.svg",
     address: "0x0eeb64ca7072f27506c44a2a9f08fd8cae5d8283",
-    decimals: 18,
+    decimals: 8,
   },
   {
     name: "WETH",
@@ -91,85 +91,376 @@ const Tokens = [
   },
 ];
 
-const chainObj = {
-  421613: [
-    {
-      name: "WBTC",
-      icon: "/supported-tokens/wbtc.svg",
-      address: "0x0eeb64ca7072f27506c44a2a9f08fd8cae5d8283",
-    },
-    {
-      name: "WETH",
-      icon: "/supported-tokens/eth.svg",
-      address: "0x0a03a0acba9677cf6b6750858a610ca2f2dd2200",
-    },
-    {
-      name: "WBNB",
-      icon: "/supported-tokens/wbnb.svg",
-      address: "0xd370874753260a6e95da818a7709360a0190c4d3",
-    },
-    {
-      name: "DAI",
-      icon: "/supported-tokens/dai.svg",
-      address: "0x38aa2e0972fb8f237a8bfbdd31ae0881594fa7a7",
-    },
-    {
-      name: "USDT",
-      icon: "/supported-tokens/usdt.svg",
-      address: "0xa37b75b9d0b69a424ef0e211c3507a5dfe9e0355",
-    },
-    {
-      name: "USDC",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5",
-    },
-    {
-      name: "ARB",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0xe19722febdd63148014bdc3e1f1ef40e97086af5",
-    },
-    {
-      name: "WMATIC",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x768a6adeed7ac201adf3e19ffd4b65fd4472c261",
-    },
-    {
-      name: "OP",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x8f452dbebd0cfa94a4a76f57ace778108a9683ad",
-    },
-    {
-      name: "MNT",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0xba17f81a8bd934f840062f29b6f9361fed07c0b5",
-    },
-    {
-      name: "AAVE",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x94eefc6177e3b5bdb773e41df1c90d86dfcdc427",
-    },
-    {
-      name: "stETH",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0xa90a86b5a43e8dbd70aa43aad4e0424cccbd44e3",
-    },
-    {
-      name: "rETH",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0xe2d30126f4580dbc19990fbf45fe7e860c20e223",
-    },
-    {
-      name: "LDO",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x089ce8d156c7e9b2066b04b7e905c78e83547379",
-    },
-    {
-      name: "RPL",
-      icon: "/supported-tokens/usdc.svg",
-      address: "0x575e857ffba2b0e27db0f603883aea8dfa2faa89",
-    },
-  ],
-};
+const MumbaiTokens = [
+  {
+    name: "WBTC",
+    icon: "/supported-tokens/wbtc.svg",
+    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    decimals: 8,
+  },
+  {
+    name: "WETH",
+    icon: "/supported-tokens/eth.svg",
+    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    decimals: 18,
+  },
+  {
+    name: "WBNB",
+    icon: "/supported-tokens/wbnb.svg",
+    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    decimals: 18,
+  },
+  {
+    name: "DAI",
+    icon: "/supported-tokens/dai.svg",
+    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    decimals: 18,
+  },
+  {
+    name: "USDT",
+    icon: "/supported-tokens/usdt.svg",
+    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    decimals: 6,
+  },
+  {
+    name: "USDC",
+    icon: "/supported-tokens/usdc.svg",
+    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    decimals: 6,
+  },
+  {
+    name: "ARB",
+    icon: "/supported-tokens/arb.svg",
+    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    decimals: 18,
+  },
+  {
+    name: "WMATIC",
+    icon: "/supported-tokens/wmatic.svg",
+    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    decimals: 18,
+  },
+  {
+    name: "OP",
+    icon: "/supported-tokens/op.svg",
+    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    decimals: 18,
+  },
+  {
+    name: "MNT",
+    icon: "/supported-tokens/mantle.svg",
+    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    decimals: 18,
+  },
+  {
+    name: "AAVE",
+    icon: "/supported-tokens/aave.svg",
+    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    decimals: 18,
+  },
+  {
+    name: "stETH",
+    icon: "/supported-tokens/steth.svg",
+    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    decimals: 18,
+  },
+  {
+    name: "rETH",
+    icon: "/supported-tokens/reth.svg",
+    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    decimals: 18,
+  },
+  {
+    name: "LDO",
+    icon: "/supported-tokens/lido.svg",
+    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    decimals: 18,
+  },
+  {
+    name: "RPL",
+    icon: "/supported-tokens/rpl.svg",
+    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    decimals: 18,
+  },
+];
+
+const ScrollTokens = [
+  {
+    name: "WBTC",
+    icon: "/supported-tokens/wbtc.svg",
+    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    decimals: 8,
+  },
+  {
+    name: "WETH",
+    icon: "/supported-tokens/eth.svg",
+    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    decimals: 18,
+  },
+  {
+    name: "WBNB",
+    icon: "/supported-tokens/wbnb.svg",
+    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    decimals: 18,
+  },
+  {
+    name: "DAI",
+    icon: "/supported-tokens/dai.svg",
+    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    decimals: 18,
+  },
+  {
+    name: "USDT",
+    icon: "/supported-tokens/usdt.svg",
+    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    decimals: 6,
+  },
+  {
+    name: "USDC",
+    icon: "/supported-tokens/usdc.svg",
+    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    decimals: 6,
+  },
+  {
+    name: "ARB",
+    icon: "/supported-tokens/arb.svg",
+    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    decimals: 18,
+  },
+  {
+    name: "WMATIC",
+    icon: "/supported-tokens/wmatic.svg",
+    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    decimals: 18,
+  },
+  {
+    name: "OP",
+    icon: "/supported-tokens/op.svg",
+    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    decimals: 18,
+  },
+  {
+    name: "MNT",
+    icon: "/supported-tokens/mantle.svg",
+    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    decimals: 18,
+  },
+  {
+    name: "AAVE",
+    icon: "/supported-tokens/aave.svg",
+    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    decimals: 18,
+  },
+  {
+    name: "stETH",
+    icon: "/supported-tokens/steth.svg",
+    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    decimals: 18,
+  },
+  {
+    name: "rETH",
+    icon: "/supported-tokens/reth.svg",
+    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    decimals: 18,
+  },
+  {
+    name: "LDO",
+    icon: "/supported-tokens/lido.svg",
+    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    decimals: 18,
+  },
+  {
+    name: "RPL",
+    icon: "/supported-tokens/rpl.svg",
+    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    decimals: 18,
+  },
+];
+const CeloTokens = [
+  {
+    name: "WBTC",
+    icon: "/supported-tokens/wbtc.svg",
+    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    decimals: 8,
+  },
+  {
+    name: "WETH",
+    icon: "/supported-tokens/eth.svg",
+    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    decimals: 18,
+  },
+  {
+    name: "WBNB",
+    icon: "/supported-tokens/wbnb.svg",
+    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    decimals: 18,
+  },
+  {
+    name: "DAI",
+    icon: "/supported-tokens/dai.svg",
+    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    decimals: 18,
+  },
+  {
+    name: "USDT",
+    icon: "/supported-tokens/usdt.svg",
+    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    decimals: 6,
+  },
+  {
+    name: "USDC",
+    icon: "/supported-tokens/usdc.svg",
+    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    decimals: 6,
+  },
+  {
+    name: "ARB",
+    icon: "/supported-tokens/arb.svg",
+    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    decimals: 18,
+  },
+  {
+    name: "WMATIC",
+    icon: "/supported-tokens/wmatic.svg",
+    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    decimals: 18,
+  },
+  {
+    name: "OP",
+    icon: "/supported-tokens/op.svg",
+    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    decimals: 18,
+  },
+  {
+    name: "MNT",
+    icon: "/supported-tokens/mantle.svg",
+    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    decimals: 18,
+  },
+  {
+    name: "AAVE",
+    icon: "/supported-tokens/aave.svg",
+    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    decimals: 18,
+  },
+  {
+    name: "stETH",
+    icon: "/supported-tokens/steth.svg",
+    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    decimals: 18,
+  },
+  {
+    name: "rETH",
+    icon: "/supported-tokens/reth.svg",
+    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    decimals: 18,
+  },
+  {
+    name: "LDO",
+    icon: "/supported-tokens/lido.svg",
+    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    decimals: 18,
+  },
+  {
+    name: "RPL",
+    icon: "/supported-tokens/rpl.svg",
+    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    decimals: 18,
+  },
+];
+
+const BaseTokens = [
+  {
+    name: "WBTC",
+    icon: "/supported-tokens/wbtc.svg",
+    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    decimals: 8,
+  },
+  {
+    name: "WETH",
+    icon: "/supported-tokens/eth.svg",
+    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    decimals: 18,
+  },
+  {
+    name: "WBNB",
+    icon: "/supported-tokens/wbnb.svg",
+    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    decimals: 18,
+  },
+  {
+    name: "DAI",
+    icon: "/supported-tokens/dai.svg",
+    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    decimals: 18,
+  },
+  {
+    name: "USDT",
+    icon: "/supported-tokens/usdt.svg",
+    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    decimals: 6,
+  },
+  {
+    name: "USDC",
+    icon: "/supported-tokens/usdc.svg",
+    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    decimals: 6,
+  },
+  {
+    name: "ARB",
+    icon: "/supported-tokens/arb.svg",
+    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    decimals: 18,
+  },
+  {
+    name: "WMATIC",
+    icon: "/supported-tokens/wmatic.svg",
+    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    decimals: 18,
+  },
+  {
+    name: "OP",
+    icon: "/supported-tokens/op.svg",
+    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    decimals: 18,
+  },
+  {
+    name: "MNT",
+    icon: "/supported-tokens/mantle.svg",
+    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    decimals: 18,
+  },
+  {
+    name: "AAVE",
+    icon: "/supported-tokens/aave.svg",
+    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    decimals: 18,
+  },
+  {
+    name: "stETH",
+    icon: "/supported-tokens/steth.svg",
+    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    decimals: 18,
+  },
+  {
+    name: "rETH",
+    icon: "/supported-tokens/reth.svg",
+    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    decimals: 18,
+  },
+  {
+    name: "LDO",
+    icon: "/supported-tokens/lido.svg",
+    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    decimals: 18,
+  },
+  {
+    name: "RPL",
+    icon: "/supported-tokens/rpl.svg",
+    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    decimals: 18,
+  },
+];
 
 const getChainSvg = (chainId: number) => {
   switch (chainId) {
@@ -188,6 +479,57 @@ const getChainSvg = (chainId: number) => {
   }
 };
 
+const getTokens = (chainId: number) => {
+  switch (chainId) {
+    case 80001: // mumbai
+      return MumbaiTokens;
+    case 421613: // arb goerli
+      return ArbitrumTokens;
+    case 44787: // celo
+      return CeloTokens;
+    case 8453: // base
+      return BaseTokens;
+    case 534352: // scroll
+      return ScrollTokens;
+    default:
+      return ArbitrumTokens;
+  }
+}
+
+const getsSubGraph = (chainId: number) => {
+  switch (chainId) {
+    case 80001: // mumbai
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-mumbai/v0.0.1";
+    case 421613: // arb goerli
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
+    case 44787: // celo
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    case 8453: // base
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    case 534352: // scroll
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    default:
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+  }
+}
+
+const getDeploymentFactoryAddressAddress = (chainId: number) => {
+  switch (chainId) {
+    case 80001: // mumbai
+      return "0x1226FEf96A2f3c3d2d1d0522d2AFA580a9BF726e";
+    case 421613: // arb goerli
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    case 44787: // celo
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    case 8453: // base
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    case 534352: // scroll
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+    default:
+      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+  }
+}
+
 const tokenSvgImage = "/supported-tokens/dai.svg";
 
 const factoryAddress = "0x795220dda80b598093f88c9f46ca044a13d6358d";
@@ -200,4 +542,4 @@ const raffleTokenAddress = "0x0a03a0acba9677cf6b6750858a610ca2f2dd2200";
 
 const graphUrl = "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
 
-export { Tokens, chainObj, factoryAddress, paymentAddress, tokenSvgImage, getChainSvg, tokenCrafterRaffle, graphUrl, raffleTokenAddress };
+export { getTokens, getsSubGraph, getDeploymentFactoryAddressAddress, paymentAddress, getChainSvg, tokenCrafterRaffle, raffleTokenAddress };

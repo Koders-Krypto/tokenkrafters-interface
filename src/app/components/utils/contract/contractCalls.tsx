@@ -2,15 +2,15 @@ import { publicClient } from './client'
 import { factoryAbi } from './abi/TokenKrafterFactoryAbi';
 import { BucketABI } from './abi/TokenKrafterBucketAbi';
 import { writeContract, erc20ABI } from '@wagmi/core'
-import { factoryAddress, raffleTokenAddress, tokenCrafterRaffle } from '../../constants/tokens';
+import { getDeploymentFactoryAddressAddress, raffleTokenAddress, tokenCrafterRaffle } from '../../constants/tokens';
 import { raffleAbi } from './abi/TokenKrafterRaffle';
 
 
 
-export const readContract = async () => {
+export const readContract = async (chainId: any) => {
     try {
         const data = await publicClient.readContract({
-            address: factoryAddress,
+            address: getDeploymentFactoryAddressAddress(chainId),
             abi: factoryAbi,
             functionName: 'swapRouter',
         })
@@ -20,12 +20,12 @@ export const readContract = async () => {
     }
 }
 
-export const createBucket = async (name: string, description: string, bucketTokenURI: string, bucketValue: any) => {
+export const createBucket = async (name: string, description: string, bucketTokenURI: string, bucketValue: any, chainId: any) => {
 
     console.log(bucketValue);
     try {
         const { hash } = await writeContract({
-            address: factoryAddress,
+            address: getDeploymentFactoryAddressAddress(chainId),
             abi: factoryAbi,
             functionName: 'createBucket',
             args: [name, description, bucketTokenURI, bucketValue]
@@ -37,10 +37,10 @@ export const createBucket = async (name: string, description: string, bucketToke
     }
 }
 
-export const getDeployedBuckets = async () => {
+export const getDeployedBuckets = async (chainId: any) => {
     try {
         const data = await publicClient.readContract({
-            address: factoryAddress,
+            address: getDeploymentFactoryAddressAddress(chainId),
             abi: factoryAbi,
             functionName: 'deployedBuckets',
         });
@@ -114,7 +114,7 @@ export const enterRaffle = async (amount: number) => {
             functionName: 'approve',
             args: [tokenCrafterRaffle, BigInt(amount * 10 ** 6)]
         })
-        const transaction = await publicClient.waitForTransactionReceipt({ hash: approve });
+        await publicClient.waitForTransactionReceipt({ hash: approve });
         const { hash } = await writeContract({
             address: tokenCrafterRaffle,
             abi: raffleAbi,

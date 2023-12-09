@@ -9,7 +9,7 @@ import {
   Square3Stack3DIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { Tokens, tokenSvgImage } from "../components/constants/tokens";
+import { getTokens, getChainSvg } from "../components/constants/tokens";
 import Image from "next/image";
 import truncate from "../components/utils/truncate";
 import { Dialog, Listbox, Transition } from "@headlessui/react";
@@ -19,7 +19,7 @@ import {
   getDeployedBuckets,
 } from "../components/utils/contract/contractCalls";
 import { useAccount } from "wagmi";
-import { getTokens } from "../components/utils/utils";
+import { getActiveToken } from "../components/utils/utils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRandomColor } from "../components/data/randomColors";
@@ -35,11 +35,12 @@ import {
   getBucketList,
   getBucketPortfolioView,
 } from "../components/utils/subgraph/graph";
+import { useNetwork } from 'wagmi'
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
-  const [tokens, setTokens] = useState(Tokens);
-  const [selected, setSelected] = useState(Tokens[0]);
+  const [tokens, setTokens] = useState<any>([]);
+  const [selected, setSelected] = useState<any>([]);
   const [selectedTokens, setSelectedTokens] = useState<any>([]);
   const [bucketDescription, setBucketDescription] = useState("");
   const [bucketName, setBucketName] = useState("");
@@ -49,7 +50,7 @@ export default function Page() {
   const [refreshData, setRefreshData] = useState(false);
   const [loadingBucket, setLoadingBucket] = useState(false);
 
-  const router = useRouter();
+  const { chain, chains } = useNetwork()
 
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
 
@@ -63,16 +64,17 @@ export default function Page() {
   }, [previewNft]);
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && chain) {
+      setTokens(getTokens(chain?.id || 0));
+      setSelected(getTokens(chain?.id || 0)[0])
       setLoadingBucket(true);
       getDeployedBucketsWrapper();
     }
-  }, [isConnected, refreshData]);
+  }, [isConnected, refreshData, chain]);
 
   const getDeployedBucketsWrapper = async () => {
 
-    const deployedBuckets = await getBucketList();
-    console.log(deployedBuckets);
+    const deployedBuckets = await getBucketList(chain?.id!);
     setBucketList(deployedBuckets);
     setLoadingBucket(false);
   };
@@ -114,7 +116,7 @@ export default function Page() {
         });
         const nftImageHash = await uploadImageUsingBuffer(file);
         let newArray = bucketValue.map(({ tokenAddress, weightage }: any) => ({
-          name: getTokens(tokenAddress).name,
+          name: getActiveToken(tokenAddress, chain?.id!).name,
           value: Number(weightage) / 1000,
         }));
         const metadata = {
@@ -130,7 +132,8 @@ export default function Page() {
           bucketName,
           bucketDescription,
           lightHouseHash,
-          bucketValue
+          bucketValue,
+          chain?.id!
         );
         // TODO : Add Toast
 
@@ -244,7 +247,7 @@ export default function Page() {
                             {bucket.tokenAllocations
                               .slice(0, 3)
                               .map((tokens: any, i: number) => {
-                                const _token = getTokens(tokens.token);
+                                const _token = getActiveToken(tokens.token, chain?.id!);
                                 return (
                                   <Image
                                     key={i}
@@ -356,7 +359,7 @@ export default function Page() {
                       <div className="relative flex flex-col w-full gap-1">
                         <label htmlFor="">Select Token</label>
                         <div className="flex flex-row flex-wrap items-center justify-start gap-4">
-                          {tokens.map((token: any, i) => {
+                          {tokens.map((token: any, i: any) => {
                             return (
                               <div
                                 key={i}
@@ -468,7 +471,7 @@ export default function Page() {
                     </div>
                     <div className="flex items-center justify-center w-16 h-16 rounded-full shadow-md bg-primary">
                       <img
-                        src={tokenSvgImage}
+                        src={getChainSvg(chain?.id!)}
                         width={"40"}
                         height={"40"}
                         alt="Chain Icon"

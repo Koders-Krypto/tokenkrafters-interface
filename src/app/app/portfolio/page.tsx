@@ -2,7 +2,7 @@
 import PieChartGraph from "@/app/components/Chart/PieChartGraph";
 import { getPortfolio } from "@/app/components/utils/subgraph/graph";
 import truncate from "@/app/components/utils/truncate";
-import { getTokens } from "@/app/components/utils/utils";
+import { getActiveToken } from "@/app/components/utils/utils";
 import {
   BriefcaseIcon,
   TicketIcon,
@@ -10,52 +10,41 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 
 export default function Portfolio() {
 
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
   const [portfolio, setPortfolio] = useState<any>([]);
 
+  const { chain, chains } = useNetwork()
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && chain) {
       getPortfolioWrapper();
     }
-
-  }, [isConnected])
+  }, [isConnected, chain])
 
   const getPortfolioWrapper = async () => {
-    const data = await getPortfolio(address!.toLowerCase());
-    console.log(data)
-    // Use a Map to store the combined data
+    const data = await getPortfolio(address!.toLowerCase(), chain?.id!);
     const combinedDataMap = new Map();
-
-    // Iterate through the array
     data.forEach((item: any) => {
       const bucketId = item.bucket.id;
-
-      // Check if the bucketId is already in the Map
       if (combinedDataMap.has(bucketId)) {
-        // If yes, update the investmentAmount
         combinedDataMap.get(bucketId).investmentAmount += parseInt(formatUnits(
           item.investmentAmount,
-          getTokens(item.investmentToken).decimals
+          getActiveToken(item.investmentToken, chain?.id!).decimals
         ));
       } else {
-        // If not, add a new entry to the Map
         combinedDataMap.set(bucketId, {
           ...item, investmentAmount: parseInt(formatUnits(
             item.investmentAmount,
-            getTokens(item.investmentToken).decimals
+            getActiveToken(item.investmentToken, chain?.id!).decimals
           ))
         });
       }
     });
-
-    // Convert the Map values back to an array
     const combinedDataArray = Array.from(combinedDataMap.values());
-    console.log(combinedDataArray);
     setPortfolio(combinedDataArray);
   }
 

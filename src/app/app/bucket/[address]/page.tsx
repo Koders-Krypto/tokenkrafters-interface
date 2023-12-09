@@ -8,7 +8,7 @@ import {
   getBucketPortfolioView,
 } from "@/app/components/utils/subgraph/graph";
 import truncate from "@/app/components/utils/truncate";
-import { getTokens } from "@/app/components/utils/utils";
+import { getActiveToken } from "@/app/components/utils/utils";
 import Loading from "@/app/loading";
 import { Dialog, Transition } from "@headlessui/react";
 import {
@@ -19,7 +19,7 @@ import {
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import { formatUnits } from "viem";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 
 export default function Page({
   params,
@@ -34,18 +34,22 @@ export default function Page({
   const [totalInvestedAmount, setTotalInvestedAmount] = useState(0);
   const { address, isConnected } = useAccount();
 
+  const { chain, chains } = useNetwork()
+
+
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && chain) {
       getBucketDetailsWrapper(bucketAddress);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bucketAddress, params.address, isConnected]);
+  }, [bucketAddress, params.address, isConnected, chain]);
 
   const getBucketDetailsWrapper = async (bucketAddress: string) => {
-    const _bucket = await getBucketDetailView(bucketAddress.toLowerCase());
+    const _bucket = await getBucketDetailView(bucketAddress.toLowerCase(), chain?.id!);
     const _portfolio = await getBucketPortfolioView(
       bucketAddress.toLowerCase(),
-      address!.toLocaleLowerCase()
+      address!.toLocaleLowerCase(),
+      chain?.id!
     );
 
     if (_portfolio.length > 0) {
@@ -55,7 +59,7 @@ export default function Page({
           parseInt(
             formatUnits(
               investment.investmentAmount,
-              getTokens(investment.investmentToken).decimals
+              getActiveToken(investment.investmentToken, chain?.id!).decimals
             )
           ),
         0
@@ -144,7 +148,7 @@ export default function Page({
               </div>
               <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
                 {bucket.tokenAllocations.map((token: any, i: number) => {
-                  const _token = getTokens(token.token);
+                  const _token = getActiveToken(token.token, chain?.id!);
                   return (
                     <div
                       className="flex flex-col items-center justify-center gap-2 p-4 card"

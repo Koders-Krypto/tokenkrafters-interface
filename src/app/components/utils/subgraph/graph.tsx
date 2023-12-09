@@ -1,7 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
-import { graphUrl } from "../../constants/tokens";
+import { getsSubGraph } from "../../constants/tokens";
 
-const apiUrl = graphUrl;
 
 const axiosConfig = {
   headers: {
@@ -9,7 +8,7 @@ const axiosConfig = {
   },
 };
 
-export const getBucketList = async () => {
+export const getBucketList = async (chainId: any) => {
   const graphqlQuery = `query MyQuery {
         buckets {
             id
@@ -30,11 +29,11 @@ export const getBucketList = async () => {
   const data = {
     query: graphqlQuery,
   };
-  const response = await axios.post(apiUrl, data, axiosConfig);
+  const response = await axios.post(getsSubGraph(chainId), data, axiosConfig);
   return response.data.data.buckets;
 };
 
-export const getBucketDetailView = async (address: string) => {
+export const getBucketDetailView = async (address: string, chainId: any) => {
   const graphqlQuery = {
     query: `query ($bucketId: ID!){
   bucket(id: $bucketId) {
@@ -56,13 +55,14 @@ export const getBucketDetailView = async (address: string) => {
 }`,
     variables: { bucketId: address },
   };
-  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+  const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
   return response.data.data.bucket;
 };
 
 export const getBucketPortfolioView = async (
   bucketAddress: string,
-  userAddress: string
+  userAddress: string,
+  chainId: any
 ) => {
   const graphqlQuery = {
     query: `query ($bucket: String!, $investor: String!) {
@@ -79,11 +79,11 @@ export const getBucketPortfolioView = async (
 }`,
     variables: { bucket: bucketAddress, investor: userAddress },
   };
-  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+  const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
   return response.data.data.investments;
 };
 
-export const getPortfolio = async (account: string) => {
+export const getPortfolio = async (account: string, chainId: any) => {
   const graphqlQuery = {
     query: `query MyQuery($account: ID!) {
   account(id: $account) {
@@ -110,6 +110,6 @@ export const getPortfolio = async (account: string) => {
 }`, variables: { account: account }
   };
 
-  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+  const response = await axios.post(getsSubGraph(chainId), graphqlQuery, axiosConfig);
   return response.data.data.account.investments;
 }
