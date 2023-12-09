@@ -281,91 +281,91 @@ const CeloTokens = [
   {
     name: "WBTC",
     icon: "/supported-tokens/wbtc.svg",
-    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    address: "0x041916125514fbd39a6b192a98aec5dc519dd4b0",
     decimals: 8,
   },
   {
     name: "WETH",
     icon: "/supported-tokens/eth.svg",
-    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    address: "0x0197933ac6a1d7d5b21cbee15a1b5f05ad1dd3d8",
     decimals: 18,
   },
   {
     name: "WBNB",
     icon: "/supported-tokens/wbnb.svg",
-    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    address: "0xab5036d0e4e7db4feb20077dc6f2024032082330",
     decimals: 18,
   },
   {
     name: "DAI",
     icon: "/supported-tokens/dai.svg",
-    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    address: "0x60525e489c32bea8f2a501b2121ba10dec651290",
     decimals: 18,
   },
   {
     name: "USDT",
     icon: "/supported-tokens/usdt.svg",
-    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    address: "0x814da448b5890e4f344aeee327c6b19a08b54bdc",
     decimals: 6,
   },
   {
     name: "USDC",
     icon: "/supported-tokens/usdc.svg",
-    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    address: "0x5ba883adf2a2d0c29c4d006f92d6060c4ce7079d",
     decimals: 6,
   },
   {
     name: "ARB",
     icon: "/supported-tokens/arb.svg",
-    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    address: "0x6c04ebdff0a24fc96ac7275c9b4972fd5107bbc7",
     decimals: 18,
   },
   {
     name: "WMATIC",
     icon: "/supported-tokens/wmatic.svg",
-    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    address: "0xbd630de335c24dcab9d38aef09839ae3e2117803",
     decimals: 18,
   },
   {
     name: "OP",
     icon: "/supported-tokens/op.svg",
-    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    address: "0xbb9a94a220f3e41ce7cbf198d7555e727038de80",
     decimals: 18,
   },
   {
     name: "MNT",
     icon: "/supported-tokens/mantle.svg",
-    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    address: "0x2d4b2b79ab12e991aae3b632e25755ee12e324c1",
     decimals: 18,
   },
   {
     name: "AAVE",
     icon: "/supported-tokens/aave.svg",
-    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    address: "0xc022e2b18077a0a97fb4c9a4a73b14ddf7127e30",
     decimals: 18,
   },
   {
     name: "stETH",
     icon: "/supported-tokens/steth.svg",
-    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    address: "0x03e32bc45a526457111999c616b9ce21c065d8f1",
     decimals: 18,
   },
   {
     name: "rETH",
     icon: "/supported-tokens/reth.svg",
-    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    address: "0x7f79dedf2c5d75ea40cc62357610cd3db3edb99a",
     decimals: 18,
   },
   {
     name: "LDO",
     icon: "/supported-tokens/lido.svg",
-    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    address: "0x47a3988bcb70b7498c85ccbd9049b2e025c6eedf",
     decimals: 18,
   },
   {
     name: "RPL",
     icon: "/supported-tokens/rpl.svg",
-    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    address: "0x3c37b508c53917c86bb477e0dceefd8aa2f6abc1",
     decimals: 18,
   },
 ];
@@ -473,7 +473,7 @@ const getChainSvg = (chainId: number) => {
       return "/supported-tokens/dai.svg";
     case 8453: // base
       return "/supported-tokens/dai.svg";
-    case 534352: // scroll
+    case 534351: // scroll
       return "/supported-tokens/dai.svg";
     default:
       return "/supported-tokens/dai.svg";
@@ -490,7 +490,7 @@ const getTokens = (chainId: number) => {
       return CeloTokens;
     case 8453: // base
       return BaseTokens;
-    case 534352: // scroll
+    case 534351: // scroll
       return ScrollTokens;
     default:
       return ArbitrumTokens;
@@ -504,10 +504,10 @@ const getsSubGraph = (chainId: number) => {
     case 421613: // arb goerli
       return "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
     case 44787: // celo
-      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-celo/v0.0.1";
     case 8453: // base
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
-    case 534352: // scroll
+    case 534351: // scroll
       return "https://api.studio.thegraph.com/query/43740/token-krafter-scroll/v0.0.1";
     default:
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
@@ -521,10 +521,10 @@ const getDeploymentFactoryAddressAddress = (chainId: number) => {
     case 421613: // arb goerli
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
     case 44787: // celo
-      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+      return "0x9abc24f61d4ea7f17db15f2b022096ff174fb312";
     case 8453: // base
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
-    case 534352: // scroll
+    case 534351: // scroll
       return "0x041916125514fbd39a6b192a98aec5dc519dd4b0";
     default:
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
@@ -541,7 +541,7 @@ const getPaymentAddress = (chainId: number) => {
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
     case 8453: // base
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
-    case 534352: // scroll
+    case 534351: // scroll
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
     default:
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
