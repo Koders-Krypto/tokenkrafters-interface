@@ -1,6 +1,6 @@
 import truncate from "@/app/components/utils/truncate";
 import { TicketIcon, TrophyIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
+
 export default function Page() {
   return (
     <section className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
@@ -23,7 +23,7 @@ export default function Page() {
           <div className="flex flex-row justify-start items-center gap-2">
             <TrophyIcon className="h-6 w-6 text-primary" />
             <h1 className="text-primary font-semibold text-xl">
-              Raffle Winners
+              Raffle Participants
             </h1>
           </div>
         </div>

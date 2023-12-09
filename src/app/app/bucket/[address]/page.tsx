@@ -1,5 +1,5 @@
 "use client";
-import Chart from "@/app/components/Chart/Chart";
+import Chart from "@/app/components/Chart/AreaChart";
 import { paymentAddress } from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
 import { investInBucket } from "@/app/components/utils/contract/contractCalls";
@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
+import { formatUnits } from "viem";
 import { useAccount } from "wagmi";
 
 export default function Page({
@@ -30,7 +31,7 @@ export default function Page({
   const [bucket, setBucket] = useState<any>();
   const [portfolio, setPortfolio] = useState<any>();
   const [value, setValue] = useState("");
-
+  const [totalInvestedAmount, setTotalInvestedAmount] = useState(0);
   const { address, isConnected } = useAccount();
 
   useEffect(() => {
@@ -46,7 +47,23 @@ export default function Page({
       bucketAddress.toLowerCase(),
       address!.toLocaleLowerCase()
     );
-    console.log(_portfolio);
+
+    if (_portfolio.length > 0) {
+      const totalAmount = _portfolio.reduce(
+        (sum: number, investment: any) =>
+          sum +
+          parseInt(
+            formatUnits(
+              investment.investmentAmount,
+              getTokens(investment.investmentToken).decimals
+            )
+          ),
+        0
+      );
+      console.log(totalAmount);
+      setTotalInvestedAmount(totalAmount);
+    }
+
     setBucket(_bucket);
     setPortfolio(_portfolio);
   };
@@ -73,61 +90,64 @@ export default function Page({
 
   return (
     <>
-      <section className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
-        <div className="card w-full flex flex-row justify-between items-center p-8">
-          <div className="flex flex-col justify-between items-start gap-6">
-            <div className="flex flex-row justify-center items-center gap-6">
+      <section className="flex flex-col items-start justify-start min-h-screen gap-12 px-6 py-4 pt-28 lg:px-24 text-secondary">
+        <div className="flex flex-col items-start justify-between w-full gap-8 p-8 md:items-center md:flex-row card">
+          <div className="flex flex-col items-start justify-between gap-6">
+            <div className="flex flex-col items-start justify-center gap-6 md:items-center md:flex-row">
               <div
                 className={`h-36 flex justify-center items-center rounded-md text-white w-36 ${getRandomColor()}`}
               >
-                <h2 className="text-7xl uppercase">{bucket.name.charAt(1)}</h2>
+                <h2 className="uppercase text-7xl">{bucket.name.charAt(0)}</h2>
               </div>
-              <div className="flex flex-col justify-start gap-4 items-start">
+              <div className="flex flex-col items-start justify-start gap-4">
                 <div className="flex flex-col gap-1">
-                  <h2 className="font-medium text-2xl">{bucket.name}</h2>
+                  <h2 className="text-2xl font-medium">{bucket.name}</h2>
                   <h3 className="text-sm">
                     Bucket Address {truncate(bucket.creator.id, 12, "...")}
                   </h3>
                 </div>
-                <div className="flex flex-row justify-start items-center max-w-lg gap-2">
+                <div className="flex flex-row items-center justify-start max-w-lg gap-2">
                   <p>{bucket.description}</p>
                 </div>
-                <div className="flex flex-col justify-center items-center bg-primary px-4 py-2 rounded-xl shadow-xl text-secondary font-semibold text-lg">
-                  <h3 className="text-sm font-normal">You Invested</h3>
-                  <h4>${portfolio[0].investmentAmount / 1000}</h4>
-                </div>
+
+                {portfolio.length > 0 && totalInvestedAmount && (
+                  <div className="flex flex-col items-center justify-center px-4 py-2 text-lg font-semibold shadow-xl bg-primary rounded-xl text-secondary">
+                    <h3 className="text-sm font-normal">You Invested</h3>
+                    <h4>$ {totalInvestedAmount}</h4>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-center items-center gap-4">
+          <div className="flex flex-row items-center justify-center gap-4 md:flex-col">
             <div
               onClick={() => {
                 setIsOpen(true);
               }}
-              className="bg-primary/90 text-secondary px-4 py-1 text-lg rounded-md shadow-sm font-medium"
+              className="px-4 py-1 text-lg font-medium rounded-md shadow-sm bg-primary/90 text-secondary"
             >
               Invest
             </div>
-            <div className="bg-transparent border border-primary  text-primary px-4 py-1 text-lg rounded-md shadow-sm font-medium">
+            <div className="px-4 py-1 text-lg font-medium bg-transparent border rounded-md shadow-sm border-primary text-primary">
               Rebalance
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-8 w-full">
-          <div className="flex flex-col gap-12 col-span-2">
-            <div className="flex flex-col justify-start gap-4 items-start w-full">
-              <div className="flex flex-row justify-start items-center gap-2">
-                <QueueListIcon className="h-6 w-6 text-primary" />
-                <h2 className="text-primary font-semibold text-xl">
+        <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-3">
+          <div className="flex flex-col gap-12 md:col-span-2">
+            <div className="flex flex-col items-start justify-start w-full gap-4">
+              <div className="flex flex-row items-center justify-start gap-2">
+                <QueueListIcon className="w-6 h-6 text-primary" />
+                <h2 className="text-xl font-semibold text-primary">
                   Tokens List
                 </h2>
               </div>
-              <div className="grid grid-cols-4 gap-4 w-full">
+              <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
                 {bucket.tokenAllocations.map((token: any, i: number) => {
                   const _token = getTokens(token.token);
                   return (
                     <div
-                      className="card flex flex-col gap-2 justify-center items-center p-4"
+                      className="flex flex-col items-center justify-center gap-2 p-4 card"
                       key={i}
                     >
                       <Image
@@ -145,35 +165,35 @@ export default function Page({
                 })}
               </div>
             </div>
-            <div className="flex flex-col justify-start gap-4 items-start w-full">
-              <div className="flex flex-row justify-start items-center gap-2">
-                <ChartBarIcon className="h-6 w-6 text-primary" />
-                <h2 className="text-primary font-semibold text-xl">Chart</h2>
+            <div className="flex flex-col items-start justify-start w-full gap-4">
+              <div className="flex flex-row items-center justify-start gap-2">
+                <ChartBarIcon className="w-6 h-6 text-primary" />
+                <h2 className="text-xl font-semibold text-primary">Chart</h2>
               </div>
               <div className="w-full">
                 <Chart />
               </div>
             </div>
           </div>
-          <div className="flex flex-col justify-start gap-4 items-start w-full">
-            <div className="flex flex-row justify-start items-center gap-2">
-              <ArrowPathIcon className="h-6 w-6 text-primary" />
-              <h2 className="text-primary font-semibold text-xl">
+          <div className="flex flex-col items-start justify-start w-full gap-4">
+            <div className="flex flex-row items-center justify-start gap-2">
+              <ArrowPathIcon className="w-6 h-6 text-primary" />
+              <h2 className="text-xl font-semibold text-primary">
                 Rebalance History
               </h2>
             </div>
-            <div className="card p-6 py-12 flex justify-start items-start font-bold text-2xl w-full">
-              <div className="flex flex-col justify-start items-start">
-                <div className="ps-2 my-2 first:mt-0">
-                  <h3 className="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">
+            <div className="flex items-start justify-start w-full p-6 py-12 text-2xl font-bold card">
+              <div className="flex flex-col items-start justify-start">
+                <div className="my-2 ps-2 first:mt-0">
+                  <h3 className="text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                     Dec 8, 2023
                   </h3>
                 </div>
 
                 <div className="flex gap-x-3">
                   <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-gray-700">
-                    <div className="relative z-10 w-7 h-7 flex justify-center items-center">
-                      <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                    <div className="relative z-10 flex items-center justify-center w-7 h-7">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full dark:bg-gray-600"></div>
                     </div>
                   </div>
 
@@ -184,23 +204,23 @@ export default function Page({
 
                     <button
                       type="button"
-                      className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                      className="inline-flex items-center p-1 mt-1 text-xs text-gray-500 border border-transparent rounded-lg -ms-1 gap-x-2 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                     >
                       by {truncate(bucket.creator.id, 24, "...")}
                     </button>
                   </div>
                 </div>
 
-                <div className="ps-2 my-2 first:mt-0">
-                  <h3 className="text-xs font-medium uppercase text-gray-500 dark:text-gray-400">
+                <div className="my-2 ps-2 first:mt-0">
+                  <h3 className="text-xs font-medium text-gray-500 uppercase dark:text-gray-400">
                     10 Dec, 2023
                   </h3>
                 </div>
 
                 <div className="flex gap-x-3">
                   <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-gray-700">
-                    <div className="relative z-10 w-7 h-7 flex justify-center items-center">
-                      <div className="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-600"></div>
+                    <div className="relative z-10 flex items-center justify-center w-7 h-7">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full dark:bg-gray-600"></div>
                     </div>
                   </div>
 
@@ -210,7 +230,7 @@ export default function Page({
                     </h3>
                     <button
                       type="button"
-                      className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+                      className="inline-flex items-center p-1 mt-1 text-xs text-gray-500 border border-transparent rounded-lg -ms-1 gap-x-2 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                     >
                       by {truncate(bucket.creator.id, 24, "...")}
                     </button>
@@ -242,15 +262,15 @@ export default function Page({
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 w-screen overflow-y-auto">
             {/* Container to center the panel */}
-            <div className="flex min-h-full items-center justify-center p-4">
+            <div className="flex items-center justify-center min-h-full p-4">
               {/* The actual dialog panel  */}
-              <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
+              <Dialog.Panel className="flex flex-col w-full max-w-xl gap-2 p-6 mx-auto rounded-lg card">
                 <Dialog.Title className={"text-2xl font-semibold"}>
                   Invest
                 </Dialog.Title>
                 <div className="flex flex-col gap-4">
-                  <div className="flex flex-row gap-4 justify-center items-center">
-                    <div className="flex flex-row gap-1 justify-center items-center">
+                  <div className="flex flex-row items-center justify-center gap-4">
+                    <div className="flex flex-row items-center justify-center gap-1">
                       <Image
                         src={"/supported-tokens/usdc.svg"}
                         alt="USDC"
@@ -260,14 +280,14 @@ export default function Page({
                       <div className="flex flex-row">USDC</div>
                     </div>
                     <input
-                      className="px-2 py-2 border border-secondary rounded-md w-full text-secondary"
+                      className="w-full px-2 py-2 border rounded-md border-secondary text-secondary"
                       type="text"
                       placeholder="Enter the amount to invest"
                       onChange={(e) => setValue(e.target.value)}
                     />
                   </div>
 
-                  <div className="flex flex-row justify-end items-center mt-8">
+                  <div className="flex flex-row items-center justify-end mt-8">
                     <button
                       className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
                       onClick={() => handleInvest()}

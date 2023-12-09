@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import {
   BellAlertIcon,
@@ -58,6 +59,7 @@ export default function Page() {
       handleCreateBucket();
       // });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewNft]);
 
   useEffect(() => {
@@ -140,12 +142,12 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-start pt-28 gap-12 items-start px-6 py-4 lg:px-24 text-secondary">
-      <div className="flex flex-col gap-6 w-full">
-        <div className="bg-primary flex flex-col gap-4 md:flex-row justify-between items-center w-full rounded-lg shadow-md md:px-6 p-4 md:py-4">
-          <div className="flex flex-row justify-start items-center gap-2">
+    <div className="flex flex-col items-start justify-start min-h-screen gap-12 px-6 py-4 pt-28 lg:px-24 text-secondary">
+      <div className="flex flex-col w-full gap-6">
+        <div className="flex flex-col items-center justify-between w-full gap-4 p-4 rounded-lg shadow-md bg-primary md:flex-row md:px-6 md:py-4">
+          <div className="flex flex-row items-center justify-start gap-2">
             <div className="w-6 h-6">
-              <BellAlertIcon className="h-6 w-6" />
+              <BellAlertIcon className="w-6 h-6" />
             </div>
             <h1 className="text-xl font-medium">
               Craft Your Future: Build Your Crypto Kingdom, One Bucket at a
@@ -154,31 +156,31 @@ export default function Page() {
           </div>
           <button
             onClick={() => setIsOpen(true)}
-            className="w-full md:w-44 bg-transparent border border-secondary text-secondary py-2 px-6 rounded-full text-lg font-medium"
+            className="w-full px-6 py-2 text-lg font-medium bg-transparent border rounded-full md:w-44 border-secondary text-secondary"
           >
             Create Now
           </button>
         </div>
-        <div className="grid grid-cols-1 gap-4 w-full">
-          <div className="flex flex-row justify-start items-center gap-2 card rounded-full py-3 pl-2">
-            <MagnifyingGlassIcon className="h-5 w-5 text-white" />
+        <div className="grid w-full grid-cols-1 gap-4">
+          <div className="flex flex-row items-center justify-start gap-2 py-3 pl-2 rounded-full card">
+            <MagnifyingGlassIcon className="w-5 h-5 text-white" />
             <input
-              className="bg-transparent w-full focus:outline-none text-white"
+              className="w-full text-white bg-transparent focus:outline-none"
               placeholder="Search for buckets (Ex: Bull Market, Token creator address etc)"
             />
           </div>
-          <div className="flex flex-row flex-wrap justify-between items-center gap-4">
-            <div className="flex flex-row flex-wrap gap-4 justify-start items-start">
+          <div className="flex flex-row flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-row flex-wrap items-start justify-start gap-4">
               <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
-                <ChartBarIcon className="h-5 w-5" />
+                <ChartBarIcon className="w-5 h-5" />
                 <h2>Top gainers</h2>
               </div>
               <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
-                <BoltIcon className="h-5 w-5" />
+                <BoltIcon className="w-5 h-5" />
                 <h2>Popular</h2>
               </div>
               <div className="border border-primary px-6 py-1.5 rounded-full shadow-md flex gap-2 flex-row justify-center items-center text-primary">
-                <ScaleIcon className="h-5 w-5" />
+                <ScaleIcon className="w-5 h-5" />
                 <h2>Recently rebalanced</h2>
               </div>
             </div>
@@ -195,10 +197,10 @@ export default function Page() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-4 justify-start items-start w-full">
-        <div className="flex flex-row justify-start items-center gap-2">
-          <Square3Stack3DIcon className="h-6 w-6 text-primary" />
-          <h2 className="text-primary font-semibold text-xl">All Collection</h2>
+      <div className="flex flex-col items-start justify-start w-full gap-4">
+        <div className="flex flex-row items-center justify-start gap-2">
+          <Square3Stack3DIcon className="w-6 h-6 text-primary" />
+          <h2 className="text-xl font-semibold text-primary">All Collection</h2>
         </div>
         {isConnected ? (
           <>
@@ -206,7 +208,7 @@ export default function Page() {
               <>
                 <svg
                   role="status"
-                  className="inline h-10 w-10 animate-spin text-white"
+                  className="inline w-10 h-10 text-white animate-spin"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -223,36 +225,24 @@ export default function Page() {
               </>
             ) : (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
+                <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                   {bucketList.map((bucket: any, index: number) => {
                     return (
-                      <Link
-                        href={`/app/bucket/${bucket.id}`}
+                      <div
                         key={index}
-                        className="card p-6 rounded-lg shadow-xl flex flex-col gap-4 cursor-pointer"
+                        className="flex flex-col gap-4 p-6 rounded-lg shadow-xl cursor-pointer card"
                       >
-                        <div className="flex flex-row justify-between items-start">
-                          <div className="flex flex-col justify-start items-start gap-4">
-                            <div
-                              className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
-                            >
-                              <h2 className="text-5xl uppercase">
-                                {bucket?.name?.charAt(1)}
-                              </h2>
-                            </div>
-                            <div className="flex flex-col justify-start items-start">
-                              <h2 className="font-medium text-lg">
-                                {bucket.name}
-                              </h2>
-
-                              <h3 className="text-sm">
-                                by {truncate(bucket.creator.id, 12, "...")}
-                              </h3>
-                            </div>
+                        <div className="flex flex-row items-start justify-between">
+                          <div
+                            className={`h-14 flex justify-center items-center rounded-md text-white w-14 ${getRandomColor()} `}
+                          >
+                            <h2 className="text-5xl uppercase">
+                              {bucket?.name?.charAt(0)}
+                            </h2>
                           </div>
-                          <div className="flex flex-row justify-start items-center gap-2">
+                          <div className="flex flex-row items-center justify-start gap-2">
                             {bucket.tokenAllocations
-                              .slice(0, 5)
+                              .slice(0, 3)
                               .map((tokens: any, i: number) => {
                                 const _token = getTokens(tokens.token);
                                 return (
@@ -265,12 +255,31 @@ export default function Page() {
                                   />
                                 );
                               })}
-                            {bucket?.tokenAllocations?.length > 5 && (
-                              <h5>{bucket?.tokenAllocations?.length - 5}+</h5>
+                            {bucket?.tokenAllocations?.length > 3 && (
+                              <h5>{bucket?.tokenAllocations?.length - 3}+</h5>
                             )}
                           </div>
                         </div>
-                      </Link>
+                        <div className="flex flex-row items-center justify-between w-full">
+                          <div className="flex flex-col items-start justify-start gap-4">
+                            <div className="flex flex-col items-start justify-start">
+                              <h2 className="text-lg font-medium">
+                                {bucket.name}
+                              </h2>
+
+                              <h3 className="text-sm">
+                                by {truncate(bucket.creator.id, 12, "...")}
+                              </h3>
+                            </div>
+                          </div>
+                          <Link
+                            href={`/app/bucket/${bucket.id}`}
+                            className="px-6 py-2 font-medium rounded-md shadow-md bg-primary text-secondary"
+                          >
+                            Invest
+                          </Link>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -303,27 +312,27 @@ export default function Page() {
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 w-screen overflow-y-auto">
             {/* Container to center the panel */}
-            <div className="flex min-h-full items-center justify-center p-4">
+            <div className="flex items-center justify-center min-h-full p-4">
               {/* The actual dialog panel  */}
               {!previewNft ? (
-                <Dialog.Panel className="flex flex-col gap-2 mx-auto max-w-xl w-full rounded-lg card p-6">
+                <Dialog.Panel className="flex flex-col w-full max-w-xl gap-2 p-6 mx-auto rounded-lg card">
                   <Dialog.Title className={"text-2xl font-semibold"}>
                     Create your own bucket
                   </Dialog.Title>
                   <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-1 justify-start items-start">
+                    <div className="flex flex-col items-start justify-start gap-1">
                       <label htmlFor="">Name</label>
                       <input
-                        className="px-2 py-2 border border-secondary rounded-md w-full text-secondary"
+                        className="w-full px-2 py-2 border rounded-md border-secondary text-secondary"
                         value={bucketName}
                         onChange={(e) => setBucketName(e.target.value)}
                         type="text"
                       />
                     </div>
-                    <div className="flex flex-col gap-1 justify-start items-start">
+                    <div className="flex flex-col items-start justify-start gap-1">
                       <label htmlFor="">Description</label>
                       <textarea
-                        className="px-2 py-2 border border-secondary rounded-md w-full text-secondary"
+                        className="w-full px-2 py-2 border rounded-md border-secondary text-secondary"
                         name=""
                         id=""
                         value={bucketDescription}
@@ -344,9 +353,9 @@ export default function Page() {
                         setTokens([..._tokens]);
                       }}
                     >
-                      <div className="flex flex-col gap-1 relative w-full">
+                      <div className="relative flex flex-col w-full gap-1">
                         <label htmlFor="">Select Token</label>
-                        <div className="flex flex-row gap-4 flex-wrap justify-start items-center">
+                        <div className="flex flex-row flex-wrap items-center justify-start gap-4">
                           {tokens.map((token: any, i) => {
                             return (
                               <div
@@ -371,7 +380,7 @@ export default function Page() {
                     </Listbox>
                     {selectedTokens.map((token: any, i: any) => (
                       <div className="grid grid-cols-4 gap-4" key={i}>
-                        <div className="flex flex-row justify-center items-center gap-1">
+                        <div className="flex flex-row items-center justify-center gap-1">
                           <Image
                             src={token.icon}
                             alt={token.name}
@@ -380,7 +389,7 @@ export default function Page() {
                           />
                           {token.name}
                         </div>
-                        <div className="col-span-3 flex flex-row justify-center items-center gap-4">
+                        <div className="flex flex-row items-center justify-center col-span-3 gap-4">
                           <input
                             type="number"
                             // value={getTokenPercentage(token)} need to fix logic
@@ -389,7 +398,7 @@ export default function Page() {
                             placeholder={`% of ${token.name} in the bucket`}
                           />
                           <TrashIcon
-                            className="h-5 w-5"
+                            className="w-5 h-5"
                             onClick={() => {
                               setTokens([...tokens, token]);
                               let _tokens = selectedTokens;
@@ -404,7 +413,7 @@ export default function Page() {
                       </div>
                     ))}
 
-                    <div className="flex flex-row justify-end items-center mt-8">
+                    <div className="flex flex-row items-center justify-end mt-8">
                       <button
                         className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
                         onClick={() => setPreviewNft(!previewNft)}
@@ -416,7 +425,7 @@ export default function Page() {
                   {/* ... */}
                 </Dialog.Panel>
               ) : (
-                <Dialog.Panel className="flex flex-col gap-2 mx-auto justify-center items-center max-w-xl w-full rounded-lg card p-6">
+                <Dialog.Panel className="flex flex-col items-center justify-center w-full max-w-xl gap-2 p-6 mx-auto rounded-lg card">
                   <div
                     id="nftImageBody"
                     className="w-[500px] h-[500px] bg-secondary flex flex-col gap-8 justify-between items-center px-8 py-12"
@@ -427,16 +436,16 @@ export default function Page() {
                       height="350"
                       width="350"
                     />
-                    <div className="flex flex-col justify-center items-center gap-8">
+                    <div className="flex flex-col items-center justify-center gap-8">
                       <div className="text-2xl font-medium">
                         <h1 className="text-2xl font-medium">{bucketName}</h1>
                       </div>
-                      <div className="grid grid-cols-2 w-full gap-8 justify-center items-center">
+                      <div className="grid items-center justify-center w-full grid-cols-2 gap-8">
                         {selectedTokens.map((token: any, i: number) => {
                           return (
                             <div
                               key={i}
-                              className="flex flex-row gap-4 card px-6 py-2 items-center justify-center"
+                              className="flex flex-row items-center justify-center gap-4 px-6 py-2 card"
                             >
                               <div>
                                 <img
@@ -446,7 +455,7 @@ export default function Page() {
                                   width={40}
                                 />
                               </div>
-                              <div className="flex flex-row gap-2 justify-center items-center">
+                              <div className="flex flex-row items-center justify-center gap-2">
                                 <h3>{token.name}</h3>
                                 <h3>
                                   ({getWeightageByTokenAddress(token.address)})
@@ -457,7 +466,7 @@ export default function Page() {
                         })}
                       </div>
                     </div>
-                    <div className="bg-primary h-16 w-16 rounded-full shadow-md flex justify-center items-center">
+                    <div className="flex items-center justify-center w-16 h-16 rounded-full shadow-md bg-primary">
                       <img
                         src={tokenSvgImage}
                         width={"40"}
