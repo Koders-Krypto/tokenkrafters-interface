@@ -1,20 +1,16 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
+import { graphUrl } from "../../constants/tokens";
 
-const apiUrl =
-  "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.3";
-
-interface GraphQLResponse {
-  data: any;
-}
+const apiUrl = graphUrl;
 
 const axiosConfig = {
-  headers: {
-    "Content-Type": "application/json",
-  },
+    headers: {
+        "Content-Type": "application/json",
+    },
 };
 
 export const getBucketList = async () => {
-  const graphqlQuery = `query MyQuery {
+    const graphqlQuery = `query MyQuery {
         buckets {
             id
     name
@@ -31,16 +27,16 @@ export const getBucketList = async () => {
 }
 }`;
 
-  const data = {
-    query: graphqlQuery,
-  };
-  const response = await axios.post(apiUrl, data, axiosConfig);
-  return response.data.data.buckets;
+    const data = {
+        query: graphqlQuery,
+    };
+    const response = await axios.post(apiUrl, data, axiosConfig);
+    return response.data.data.buckets;
 };
 
 export const getBucketDetailView = async (address: string) => {
-  const graphqlQuery = {
-    query: `query ($bucketId: ID!){
+    const graphqlQuery = {
+        query: `query ($bucketId: ID!){
   bucket(id: $bucketId) {
     name
     description
@@ -58,22 +54,22 @@ export const getBucketDetailView = async (address: string) => {
     }
   }
 }`,
-    variables: { bucketId: address },
-  };
+        variables: { bucketId: address },
+    };
 
-  const data = {
-    query: graphqlQuery,
-  };
-  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
-  return response.data.data.bucket;
+    const data = {
+        query: graphqlQuery,
+    };
+    const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+    return response.data.data.bucket;
 };
 
 export const getBucketPortfolioView = async (
-  bucketAddress: string,
-  userAddress: string
+    bucketAddress: string,
+    userAddress: string
 ) => {
-  const graphqlQuery = {
-    query: `query ($bucket: String!, $investor: String!) {
+    const graphqlQuery = {
+        query: `query ($bucket: String!, $investor: String!) {
   investments(where: { bucket: $bucket, investor: $investor }) {
     id
     investmentToken
@@ -85,12 +81,12 @@ export const getBucketPortfolioView = async (
     }
   }
 }`,
-    variables: { bucket: bucketAddress, investor: userAddress },
-  };
+        variables: { bucket: bucketAddress, investor: userAddress },
+    };
 
-  const data = {
-    query: graphqlQuery,
-  };
-  const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
-  return response.data.data.investments;
+    const data = {
+        query: graphqlQuery,
+    };
+    const response = await axios.post(apiUrl, graphqlQuery, axiosConfig);
+    return response.data.data.investments;
 };

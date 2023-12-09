@@ -68,6 +68,7 @@ export default function Page() {
   }, [isConnected, refreshData]);
 
   const getDeployedBucketsWrapper = async () => {
+
     const deployedBuckets = await getBucketList();
     console.log(deployedBuckets);
     setBucketList(deployedBuckets);
