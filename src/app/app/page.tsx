@@ -241,6 +241,11 @@ export default function Page() {
               </>
             ) : (
               <>
+                {bucketList.length <= 0 && (
+                  <div className="text-white">
+                    There are no buckets on this network!!! Create one now!!!
+                  </div>
+                )}
                 <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3">
                   {bucketList.map((bucket: any, index: number) => {
                     return (
@@ -491,7 +496,7 @@ export default function Page() {
                       </div>
                       {selectedTokens.length > 4 && (
                         <div className="flex justify-center items-center">
-                          {selectedTokens.length - 4} more
+                          +{selectedTokens.length - 4} more
                         </div>
                       )}
                     </div>

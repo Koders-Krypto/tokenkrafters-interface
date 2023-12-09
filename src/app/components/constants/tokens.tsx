@@ -466,17 +466,17 @@ const BaseTokens = [
 const getChainSvg = (chainId: number) => {
   switch (chainId) {
     case 80001: // mumbai
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/Polygon.svg";
     case 421613: // arb goerli
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/Arbitrum.svg";
     case 44787: // celo
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/Celo.svg";
     case 8453: // base
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/BASE.svg";
     case 534351: // scroll
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/Zkscroll.svg";
     default:
-      return "/supported-tokens/dai.svg";
+      return "/supported-chains/Polygon.svg";
   }
 };
 
