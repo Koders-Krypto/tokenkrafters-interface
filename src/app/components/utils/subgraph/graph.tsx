@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from "axios";
 
 const apiUrl =
-  "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.3";
+  "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
 
 interface GraphQLResponse {
   data: any;

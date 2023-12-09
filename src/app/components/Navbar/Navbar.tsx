@@ -15,16 +15,16 @@ const Navbar = () => {
 
   const Links = [
     {
-      name: "Home",
-      link: "/",
-    },
-    {
       name: "Buckets",
       link: "/app",
     },
     {
       name: "Raffle",
       link: "/app/raffle",
+    },
+    {
+      name: "Portfolio",
+      link: "/app/portfolio",
     },
   ];
 

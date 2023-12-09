@@ -66,3 +66,8 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.63);
   color: #fff;
 }
+
+.pie-row .pie-wrap > div {
+  background: red;
+  margin: 0 auto;
+}
