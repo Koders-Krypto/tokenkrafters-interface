@@ -22,13 +22,14 @@ import { getTokens } from "../components/utils/utils";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRandomColor } from "../components/data/randomColors";
-import html2canvas from "html2canvas";
-import {
-  uploadImageUsingBuffer,
-  uploadJson,
-} from "../components/utils/lightHouse/uploadToIpfs";
 import Loading from "../loading";
 import { slice } from "viem";
+import html2canvas from 'html2canvas';
+import { uploadImageUsingBuffer, uploadJson } from "../components/utils/lightHouse/uploadToIpfs";
+import { createCanvas } from 'canvas';
+import { getBucketList, getBucketPortfolioView } from "../components/utils/subgraph/graph";
+
+
 
 export default function Page() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +64,7 @@ export default function Page() {
   }, [isConnected, refreshData]);
 
   const getDeployedBucketsWrapper = async () => {
-    const deployedBuckets = await getDeployedBuckets();
+    const deployedBuckets = await getBucketList();
     setBucketList(deployedBuckets);
     setLoadingBucket(false);
   };
@@ -98,27 +99,13 @@ export default function Page() {
   const handleCreateBucket = async () => {
     if (isConnected) {
       const htmlContent = document.getElementById("nftImageBody")!;
-
-      // Create a canvas using node-canvas
-      // const canvas = createCanvas(800, 600);
-
-      // Draw the HTML content onto the canvas using html2canvas
       const canvas = await html2canvas(htmlContent);
-
       canvas.toBlob(async (blob) => {
-        // Create a File from the Blob
-        const file = new File([blob!], "capturedImage.png", {
-          type: "image/png",
-        });
-
-        // Log the File (simulating Buffer-like data)
-        console.log(file);
-
+        const file = new File([blob!], 'capturedImage.png', { type: 'image/png' });
         const nftImageHash = await uploadImageUsingBuffer(file);
-
         let newArray = bucketValue.map(({ tokenAddress, weightage }: any) => ({
-          name: getTokens(tokenAddress).name, // Change key name
-          value: Number(weightage) / 1000, // Change key name
+          name: getTokens(tokenAddress).name,
+          value: Number(weightage) / 1000,
         }));
         const metadata = {
           description: bucketDescription,
@@ -129,21 +116,13 @@ export default function Page() {
           attributes: newArray,
         };
         const lightHouseHash = await uploadJson(metadata);
+        const transactionHash = await createBucket(bucketName, bucketDescription, lightHouseHash, bucketValue);
+        // TODO : Add Toast
 
-        console.log(lightHouseHash);
-
-        await createBucket(
-          bucketName,
-          bucketDescription,
-          lightHouseHash,
-          bucketValue
-        );
         setPreviewNft(!previewNft);
         setRefreshData(!refreshData);
         setIsOpen(false);
       });
-
-      // redirect to home page
     }
   };
 

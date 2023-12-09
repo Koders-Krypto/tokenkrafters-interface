@@ -175,8 +175,10 @@ const getChainSvg = (chainId: number) => {
 
 const tokenSvgImage = "/supported-tokens/dai.svg";
 
-const factoryAddress = "0x442ab6d23c416d06258eaf89a9d31fa890e6a390";
+const factoryAddress = "0x795220dda80b598093f88c9f46ca044a13d6358d";
 
 const paymentAddress = "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
+
+const graphUrl = "https://graph";
 
 export { Tokens, chainObj, factoryAddress, paymentAddress, tokenSvgImage, getChainSvg };
