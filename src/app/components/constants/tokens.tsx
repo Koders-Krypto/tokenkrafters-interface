@@ -374,91 +374,91 @@ const BaseTokens = [
   {
     name: "WBTC",
     icon: "/supported-tokens/wbtc.svg",
-    address: "0x32d72a04a9cef882f32efba2618c56a4df99e979",
+    address: "0xa3d824993f93488ed7ba927810048ba01816ff03",
     decimals: 8,
   },
   {
     name: "WETH",
     icon: "/supported-tokens/eth.svg",
-    address: "0x978f6b3021ee2f7d4b9920f495ab5af4b7ecc983",
+    address: "0xf8eec0ab7c99583611ac1667bd965c080396233b",
     decimals: 18,
   },
   {
     name: "WBNB",
     icon: "/supported-tokens/wbnb.svg",
-    address: "0xcd565fda055f341b0c3aff745fd0957466c97271",
+    address: "0x18c5e0d08e290f053fcb1ddff867c77716b8395b",
     decimals: 18,
   },
   {
     name: "DAI",
     icon: "/supported-tokens/dai.svg",
-    address: "0xb0db08dec75a78e0f2d5e9a96ac8aad167b5c3dd",
+    address: "0x342a4be4332ad216d8a5f5a67f1ecc7249b360d7",
     decimals: 18,
   },
   {
     name: "USDT",
     icon: "/supported-tokens/usdt.svg",
-    address: "0xad079fdfbfd53d03fd922bd05cd393c1eb9cecb2",
+    address: "0x9e395d764b641846ed742e00498fc2e0f822d81c",
     decimals: 6,
   },
   {
     name: "USDC",
     icon: "/supported-tokens/usdc.svg",
-    address: "0x9b8ad586ba5f5974dfbea53c3fd3c8f4bb553e90",
+    address: "0x43aeb2b2bc97d32d3e5418b4441225a164eb3726",
     decimals: 6,
   },
   {
     name: "ARB",
     icon: "/supported-tokens/arb.svg",
-    address: "0x2cb1060fb75c9de3627dbb5f9739ec732c35422f",
+    address: "0x45415787f4c5612d60ad1ac982ff1010f9c88aa6",
     decimals: 18,
   },
   {
     name: "WMATIC",
     icon: "/supported-tokens/wmatic.svg",
-    address: "0x9b2e042e984ea9d5a48dfd1de21ba85eff81e159",
+    address: "0x3bf486d681909a4333dd9030f0c0e1ac62da8825",
     decimals: 18,
   },
   {
     name: "OP",
     icon: "/supported-tokens/op.svg",
-    address: "0xceec7f92fabff1cf7ac848b7e55e6323d1b6510a",
+    address: "0xc218b1f70e0e9c464ef78fb50e67004f2cd6e581",
     decimals: 18,
   },
   {
     name: "MNT",
     icon: "/supported-tokens/mantle.svg",
-    address: "0xe79f5361424345511ea15f7b75c3fd420f662c8c",
+    address: "0x8d8bd35a7db2b8b8f0d02bd69169fe30fc30daf6",
     decimals: 18,
   },
   {
     name: "AAVE",
     icon: "/supported-tokens/aave.svg",
-    address: "0x665e14bfa3a272fe6bafd11fabbe50c57a7b32ce",
+    address: "0x0f8337319ffccbf7da455f8c56ea611c8d9c672f",
     decimals: 18,
   },
   {
     name: "stETH",
     icon: "/supported-tokens/steth.svg",
-    address: "0x82aba25144e85b1f024d173912fcac02aca389fb",
+    address: "0x9fdbda5143fae6d745e8ca7274fb4ea0e7b74b77",
     decimals: 18,
   },
   {
     name: "rETH",
     icon: "/supported-tokens/reth.svg",
-    address: "0xf2e12cc656af29521d067acb3c3eedd15fc57735",
+    address: "0x3d5a86fc8c67fe9daac09385ff3ccecee8829bbc",
     decimals: 18,
   },
   {
     name: "LDO",
     icon: "/supported-tokens/lido.svg",
-    address: "0x843695e78cac59700359ece16abc571a9b30e726",
+    address: "0x4271365e80756d10c395389d1b36c0de50f7d8a9",
     decimals: 18,
   },
   {
     name: "RPL",
     icon: "/supported-tokens/rpl.svg",
-    address: "0x78c6a3bba15059802d5b158d7e47a9bc278762ac",
+    address: "0xae86da538f1ba5e4ff5e5367f4bbccc40e651247",
     decimals: 18,
   },
 ];
@@ -502,15 +502,15 @@ const getsSubGraph = (chainId: number) => {
     case 80001: // mumbai
       return "https://api.studio.thegraph.com/query/43740/token-krafter-mumbai/v0.0.1";
     case 421613: // arb goerli
-      return "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.4";
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.5";
     case 44787: // celo
       return "https://api.studio.thegraph.com/query/43740/token-krafter-celo/v0.0.1";
     case 8453: // base
-      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-base/v0.0.1";
     case 534351: // scroll
       return "https://api.studio.thegraph.com/query/43740/token-krafter-scroll/v0.0.1";
     default:
-      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+      return "https://api.studio.thegraph.com/query/43740/token-krafter-mumbai/v0.0.1";
   }
 };
 
@@ -523,7 +523,7 @@ const getDeploymentFactoryAddressAddress = (chainId: number) => {
     case 44787: // celo
       return "0x9abc24f61d4ea7f17db15f2b022096ff174fb312";
     case 8453: // base
-      return "0x795220dda80b598093f88c9f46ca044a13d6358d";
+      return "0x283e267a411a7bc5d37c25528a0b6aa3ba9c6719";
     case 534351: // scroll
       return "0x041916125514fbd39a6b192a98aec5dc519dd4b0";
     default:
@@ -538,11 +538,11 @@ const getPaymentAddress = (chainId: number) => {
     case 421613: // arb goerli
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
     case 44787: // celo
-      return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
+      return "0x814da448b5890e4f344aeee327c6b19a08b54bdc";
     case 8453: // base
-      return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
+      return "0x43aeb2b2bc97d32d3e5418b4441225a164eb3726";
     case 534351: // scroll
-      return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
+      return "0xc25b5cfcb909885c48038f7b844e8084c7614236";
     default:
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
   }
