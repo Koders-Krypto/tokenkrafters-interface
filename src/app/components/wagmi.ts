@@ -1,5 +1,11 @@
 import { walletConnectProvider, EIP6963Connector } from "@web3modal/wagmi";
-import { arbitrum, arbitrumGoerli, polygonMumbai, scrollSepolia, celoAlfajores } from "viem/chains";
+import {
+  arbitrum,
+  arbitrumGoerli,
+  polygonMumbai,
+  scrollSepolia,
+  celoAlfajores,
+} from "viem/chains";
 import { Chain, configureChains, createConfig, mainnet } from "wagmi";
 import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
@@ -13,14 +19,17 @@ const {
   chains: [, ...chains],
   publicClient,
   webSocketPublicClient,
-} = configureChains([mainnet, arbitrumGoerli, polygonMumbai, scrollSepolia, celoAlfajores], [publicProvider()]);
+} = configureChains(
+  [mainnet, arbitrumGoerli, polygonMumbai, scrollSepolia, celoAlfajores],
+  [publicProvider()]
+);
 
 const metadata = {
   name: "TokenKrafters",
   description: "Scan and pay",
-  url: "https://tokencrafter-interface.vercel.app/",
+  url: "https://tokenkrafters-interface.vercel.app/",
   icons: [
-    "https://tokencrafter-interface.vercel.app/logo/TokenKrafters-Teal.png",
+    "https://tokenkrafters-interface.vercel.app/logo/TokenKrafters-Teal.png",
   ],
 };
 

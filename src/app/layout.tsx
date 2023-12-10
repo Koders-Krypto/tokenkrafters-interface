@@ -19,8 +19,8 @@ export const metadata = {
       "Unlocking Infinite Possibilities: Your Gateway to Seamless Token Swaps and Diversified Portfolios",
     images: [
       {
-        url: "https://tokencrafter-interface.vercel.app/og/og-home.png",
-        secureUrl: "https://tokencrafter-interface.vercel.app/og/og-home.png",
+        url: "https://tokenkrafters-interface.vercel.app/og/og-home.png",
+        secureUrl: "https://tokenkrafters-interface.vercel.app/og/og-home.png",
         alt: "TokenKrafters - Krafting Your Crypto Portfolios",
         width: 1200,
         height: 630,
@@ -39,7 +39,7 @@ export const metadata = {
     description:
       "Unlocking Infinite Possibilities: Your Gateway to Seamless Token Swaps and Diversified Portfolios",
     creator: "@KryptoKoders",
-    images: ["https://tokencrafter-interface.vercel.app/og/og-home.png"],
+    images: ["https://tokenkrafters-interface.vercel.app/og/og-home.png"],
   },
   robots: {
     index: true,
