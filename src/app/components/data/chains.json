@@ -12,23 +12,15 @@
         "logo": "/supported-chains/Celo.svg"
     },
     {
-        "name": "Linea",
-        "logo": "/supported-chains/Linea.svg"
-    },
-    {
-        "name": "Mantle",
-        "logo": "/supported-chains/Mantle.svg"
-    },
-    {
-        "name": "OKX",
-        "logo": "/supported-chains/OKX.svg"
-    },
-    {
         "name": "Polygon",
         "logo": "/supported-chains/Polygon.svg"
     },
     {
         "name": "Zkscroll",
         "logo": "/supported-chains/Zkscroll.svg"
+    },
+    {
+        "name": "The Graph",
+        "logo": "/supported-chains/Graph.svg"
     }
 ]
