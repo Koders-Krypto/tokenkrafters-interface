@@ -22,5 +22,13 @@
     {
         "name": "The Graph",
         "logo": "/supported-chains/Graph.svg"
+    },
+    {
+        "name": "Filecoin",
+        "logo": "/supported-chains/Filecoin.svg"
+    },
+    {
+        "name": "Lighthouse",
+        "logo": "/supported-chains/Lighthouse.jpeg"
     }
 ]
