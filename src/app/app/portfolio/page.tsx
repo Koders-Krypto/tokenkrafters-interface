@@ -16,13 +16,13 @@ export default function Portfolio() {
   const { address, isConnected, isConnecting, isDisconnected } = useAccount();
   const [portfolio, setPortfolio] = useState<any>([]);
 
-  const { chain, chains } = useNetwork()
+  const { chain, chains } = useNetwork();
 
   useEffect(() => {
     if (isConnected && address && chain) {
       getPortfolioWrapper();
     }
-  }, [isConnected, chain])
+  }, [isConnected, chain]);
 
   const getPortfolioWrapper = async () => {
     const data = await getPortfolio(address!.toLowerCase(), chain?.id!);
@@ -30,16 +30,21 @@ export default function Portfolio() {
     data.forEach((item: any) => {
       const bucketId = item.bucket.id;
       if (combinedDataMap.has(bucketId)) {
-        combinedDataMap.get(bucketId).investmentAmount += parseInt(formatUnits(
-          item.investmentAmount,
-          getActiveToken(item.investmentToken, chain?.id!).decimals
-        ));
-      } else {
-        combinedDataMap.set(bucketId, {
-          ...item, investmentAmount: parseInt(formatUnits(
+        combinedDataMap.get(bucketId).investmentAmount += parseInt(
+          formatUnits(
             item.investmentAmount,
             getActiveToken(item.investmentToken, chain?.id!).decimals
-          ))
+          )
+        );
+      } else {
+        combinedDataMap.set(bucketId, {
+          ...item,
+          investmentAmount: parseInt(
+            formatUnits(
+              item.investmentAmount,
+              getActiveToken(item.investmentToken, chain?.id!).decimals
+            )
+          ),
         });
       }
     });
@@ -48,17 +53,15 @@ export default function Portfolio() {
   };
 
   return (
-    <section className="flex flex-col items-start justify-start min-h-screen gap-12 px-6 py-4 pt-28 lg:px-24 text-secondary">
+    <section className="flex flex-col items-start justify-start min-h-screen gap-4 px-6 py-4 pt-28 lg:px-24 text-secondary">
+      <div className="flex flex-row items-center justify-between w-full">
+        <div className="flex flex-row items-center justify-start gap-2">
+          <BriefcaseIcon className="w-6 h-6 text-primary" />
+          <h1 className="text-xl font-semibold text-primary">Invested In</h1>
+        </div>
+      </div>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
         <div className="flex flex-col items-start justify-start w-full gap-4 md:col-span-3">
-          <div className="flex flex-row items-center justify-between w-full">
-            <div className="flex flex-row items-center justify-start gap-2">
-              <BriefcaseIcon className="w-6 h-6 text-primary" />
-              <h1 className="text-xl font-semibold text-primary">
-                Invested In
-              </h1>
-            </div>
-          </div>
           <div className="grid w-full grid-cols-1 gap-2">
             <div className="hidden w-full grid-cols-4 gap-6 px-6 py-2 text-white md:grid">
               <div>ID</div>
@@ -88,11 +91,13 @@ export default function Portfolio() {
             })}
           </div>
         </div>
-        <div className="flex flex-col items-center justify-between w-full gap-0 px-6 py-4 rounded-lg shadow-md bg-primary">
-          <div className="flex flex-col items-center justify-start gap-2">
-            <h1 className="text-xl font-medium text-center">Breakdown</h1>
+        <div>
+          <div className="flex flex-col items-center justify-start w-full gap-0 px-6 py-4 rounded-lg shadow-md bg-primary">
+            <div className="flex flex-col items-center justify-start gap-2">
+              <h1 className="text-xl font-medium text-center">Breakdown</h1>
+            </div>
+            <PieChartGraph />
           </div>
-          <PieChartGraph />
         </div>
       </div>
     </section>
