@@ -1,6 +1,6 @@
 "use client";
 import Chart from "@/app/components/Chart/AreaChart";
-import { getPaymentAddress } from "@/app/components/constants/tokens";
+import { getChainExplorer, getPaymentAddress } from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
 import { investInBucket } from "@/app/components/utils/contract/contractCalls";
 import {
@@ -21,6 +21,7 @@ import { Fragment, useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useAccount, useNetwork } from "wagmi";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 export default function Page({
   params,
@@ -34,6 +35,7 @@ export default function Page({
   const [value, setValue] = useState("");
   const [totalInvestedAmount, setTotalInvestedAmount] = useState(0);
   const { address, isConnected } = useAccount();
+  const [refreshData, setRefreshData] = useState(false);
 
   const { chain, chains } = useNetwork();
 
@@ -42,7 +44,7 @@ export default function Page({
       getBucketDetailsWrapper(bucketAddress);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bucketAddress, params.address, isConnected, chain]);
+  }, [bucketAddress, params.address, isConnected, chain, refreshData]);
 
   const getBucketDetailsWrapper = async (bucketAddress: string) => {
     const _bucket = await getBucketDetailView(
@@ -83,6 +85,26 @@ export default function Page({
         getPaymentAddress(chain?.id!) as `0x{string}`,
         parseInt(value)
       );
+      if (invest) {
+        toast((t) => (
+          <span className="flex flex-col justify-center items-center">
+            Transaction Submitted Succesfullly!!!
+            <Link
+              href={`${getChainExplorer(chain?.id!)}${invest}`}
+              target="_blank"
+              className="underline"
+            >
+              View on explorer
+            </Link>
+          </span>
+        ));
+
+        setTimeout(() => {
+          setRefreshData(!refreshData);
+        }, 6000);
+      } else {
+        toast.error("Something went wrong!!! Try again!!!");
+      }
       console.log(invest);
     } else {
       toast.error("Enter the USDC amount to Invest");

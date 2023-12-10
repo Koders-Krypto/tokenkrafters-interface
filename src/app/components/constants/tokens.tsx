@@ -538,7 +538,7 @@ const getPaymentAddress = (chainId: number) => {
     case 421613: // arb goerli
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
     case 44787: // celo
-      return "0x814da448b5890e4f344aeee327c6b19a08b54bdc";
+      return "0x5ba883adf2a2d0c29c4d006f92d6060c4ce7079d";
     case 8453: // base
       return "0x43aeb2b2bc97d32d3e5418b4441225a164eb3726";
     case 534351: // scroll
