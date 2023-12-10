@@ -36,6 +36,7 @@ export default function Page({
   const [totalInvestedAmount, setTotalInvestedAmount] = useState(0);
   const { address, isConnected } = useAccount();
   const [refreshData, setRefreshData] = useState(false);
+  const [investButtonLabel, setInvestButtonLabel] = useState("Invest");
 
   const { chain, chains } = useNetwork();
 
@@ -80,6 +81,7 @@ export default function Page({
   const handleInvest = async () => {
     // if (isConnected) {
     if (value.length > 0) {
+      setInvestButtonLabel("Continue in metamask ...")
       const invest = await investInBucket(
         bucketAddress,
         getPaymentAddress(chain?.id!) as `0x{string}`,
@@ -110,6 +112,8 @@ export default function Page({
       toast.error("Enter the USDC amount to Invest");
       console.log("Enter the USDC amount to Invest");
     }
+    setInvestButtonLabel("Invest")
+    setIsOpen(false);
     // }
   };
 
@@ -319,9 +323,9 @@ export default function Page({
                   <div className="flex flex-row items-center justify-end mt-8">
                     <button
                       className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
-                      onClick={() => handleInvest()}
+                      onClick={() => investButtonLabel === "Invest" && handleInvest()}
                     >
-                      Submit
+                      {investButtonLabel}
                     </button>
                   </div>
                 </div>
