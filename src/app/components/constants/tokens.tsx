@@ -471,7 +471,7 @@ const getChainSvg = (chainId: number) => {
       return "/supported-chains/Arbitrum.svg";
     case 44787: // celo
       return "/supported-chains/Celo.svg";
-    case 8453: // base
+    case 84531: // base
       return "/supported-chains/BASE.svg";
     case 534351: // scroll
       return "/supported-chains/Zkscroll.svg";
@@ -488,7 +488,7 @@ const getTokens = (chainId: number) => {
       return ArbitrumTokens;
     case 44787: // celo
       return CeloTokens;
-    case 8453: // base
+    case 84531: // base
       return BaseTokens;
     case 534351: // scroll
       return ScrollTokens;
@@ -505,7 +505,7 @@ const getsSubGraph = (chainId: number) => {
       return "https://api.studio.thegraph.com/query/43740/token-krafter-subgraph/v0.0.5";
     case 44787: // celo
       return "https://api.studio.thegraph.com/query/43740/token-krafter-celo/v0.0.1";
-    case 8453: // base
+    case 84531: // base
       return "https://api.studio.thegraph.com/query/43740/token-krafter-base/v0.0.1";
     case 534351: // scroll
       return "https://api.studio.thegraph.com/query/43740/token-krafter-scroll/v0.0.1";
@@ -522,7 +522,7 @@ const getDeploymentFactoryAddressAddress = (chainId: number) => {
       return "0x795220dda80b598093f88c9f46ca044a13d6358d";
     case 44787: // celo
       return "0x9abc24f61d4ea7f17db15f2b022096ff174fb312";
-    case 8453: // base
+    case 84531: // base
       return "0x283e267a411a7bc5d37c25528a0b6aa3ba9c6719";
     case 534351: // scroll
       return "0x041916125514fbd39a6b192a98aec5dc519dd4b0";
@@ -539,7 +539,7 @@ const getPaymentAddress = (chainId: number) => {
       return "0x4b83ed13b388b126056fbd1f8518b8d9f904b7d5";
     case 44787: // celo
       return "0x5ba883adf2a2d0c29c4d006f92d6060c4ce7079d";
-    case 8453: // base
+    case 84531: // base
       return "0x43aeb2b2bc97d32d3e5418b4441225a164eb3726";
     case 534351: // scroll
       return "0xc25b5cfcb909885c48038f7b844e8084c7614236";
@@ -556,7 +556,7 @@ const getChainExplorer = (chainId: number) => {
       return "https://goerli.arbiscan.io/tx/";
     case 44787: // celo
       return "https://explorer.celo.org/alfajores/tx/";
-    case 8453: // base
+    case 84531: // base
       return "https://goerli.basescan.org/tx/";
     case 534352: // scroll
       return "https://sepolia-blockscout.scroll.io/tx/";

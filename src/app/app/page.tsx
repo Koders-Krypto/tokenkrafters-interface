@@ -270,13 +270,18 @@ export default function Page() {
                                   chain?.id!
                                 );
                                 return (
-                                  <Image
+                                  <div
+                                    className="bg-slate-200 rounded-full p-0.5 ml-[-1rem]"
                                     key={i}
-                                    src={_token!.icon}
-                                    alt={_token!.name}
-                                    height={"30"}
-                                    width={"30"}
-                                  />
+                                  >
+                                    <Image
+                                      className=" rounded-full"
+                                      src={_token!.icon}
+                                      alt={_token!.name}
+                                      height={"30"}
+                                      width={"30"}
+                                    />
+                                  </div>
                                 );
                               })}
                             {bucket?.tokenAllocations?.length > 3 && (
