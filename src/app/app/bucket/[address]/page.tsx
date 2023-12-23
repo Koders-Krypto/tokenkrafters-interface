@@ -1,6 +1,9 @@
 "use client";
 import Chart from "@/app/components/Chart/AreaChart";
-import { getChainExplorer, getPaymentAddress } from "@/app/components/constants/tokens";
+import {
+  getChainExplorer,
+  getPaymentAddress,
+} from "@/app/components/constants/tokens";
 import { getRandomColor } from "@/app/components/data/randomColors";
 import { investInBucket } from "@/app/components/utils/contract/contractCalls";
 import {
@@ -81,7 +84,7 @@ export default function Page({
   const handleInvest = async () => {
     // if (isConnected) {
     if (value.length > 0) {
-      setInvestButtonLabel("Continue in metamask ...")
+      setInvestButtonLabel("Continue in metamask ...");
       const invest = await investInBucket(
         bucketAddress,
         getPaymentAddress(chain?.id!) as `0x{string}`,
@@ -112,7 +115,7 @@ export default function Page({
       toast.error("Enter the USDC amount to Invest");
       console.log("Enter the USDC amount to Invest");
     }
-    setInvestButtonLabel("Invest")
+    setInvestButtonLabel("Invest");
     setIsOpen(false);
     // }
   };
@@ -142,27 +145,30 @@ export default function Page({
                 <div className="flex flex-row items-center justify-start max-w-lg gap-2">
                   <p>{bucket.description}</p>
                 </div>
-
-                {portfolio.length > 0 && totalInvestedAmount && (
-                  <div className="flex flex-col items-center justify-center px-4 py-2 text-lg font-semibold shadow-xl bg-primary rounded-xl text-secondary">
-                    <h3 className="text-sm font-normal">You Invested</h3>
-                    <h4>$ {totalInvestedAmount}</h4>
-                  </div>
-                )}
               </div>
             </div>
           </div>
-          <div className="flex flex-row items-center justify-center gap-4 md:flex-col">
-            <div
-              onClick={() => {
-                setIsOpen(true);
-              }}
-              className="px-4 py-1 text-lg font-medium rounded-md shadow-sm bg-primary/90 text-secondary"
-            >
-              Invest
+          <div className="flex flex-row justify-center items-center gap-8">
+            <div>
+              {portfolio.length > 0 && totalInvestedAmount && (
+                <div className="flex flex-col items-center justify-center px-4 py-2 text-lg font-semibold shadow-xl border border-primary rounded-xl text-primary">
+                  <h3 className="text-sm font-normal">You Invested</h3>
+                  <h4>$ {totalInvestedAmount}</h4>
+                </div>
+              )}
             </div>
-            <div className="px-4 py-1 text-lg font-medium bg-transparent border rounded-md shadow-sm border-primary text-primary">
-              Rebalance
+            <div className="flex flex-row items-center justify-center gap-4 md:flex-col">
+              <div
+                onClick={() => {
+                  setIsOpen(true);
+                }}
+                className="px-4 py-1 text-lg font-medium rounded-md shadow-sm bg-primary/90 text-secondary"
+              >
+                Invest
+              </div>
+              <div className="px-4 py-1 text-lg font-medium text-center bg-transparent border rounded-md shadow-sm border-primary text-primary">
+                Rebalance
+              </div>
             </div>
           </div>
         </div>
@@ -323,7 +329,9 @@ export default function Page({
                   <div className="flex flex-row items-center justify-end mt-8">
                     <button
                       className="bg-primary text-secondary px-6 py-1.5 rounded-md shadow-md text-lg"
-                      onClick={() => investButtonLabel === "Invest" && handleInvest()}
+                      onClick={() =>
+                        investButtonLabel === "Invest" && handleInvest()
+                      }
                     >
                       {investButtonLabel}
                     </button>

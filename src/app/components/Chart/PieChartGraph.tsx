@@ -3,12 +3,13 @@ import React, { PureComponent } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
+  { name: "Polygon", value: 1000, color: "bg-[#8247E5]" },
   { name: "Arbitirum", value: 400, color: "bg-[#213147]" },
   { name: "Celo", value: 100, color: "bg-[#FBCC5C]" },
-  { name: "Polygon", value: 200, color: "bg-[#8247E5]" },
+
   { name: "Base", value: 50, color: "bg-[#024FF6]" },
 ];
-const COLORS = ["#213147", "#FBCC5C", "#8247E5", "#024FF6"];
+const COLORS = ["#8247E5", "#213147", "#FBCC5C", "#024FF6"];
 
 export default function PieChartGraph() {
   return (

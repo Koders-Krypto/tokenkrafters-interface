@@ -1,31 +1,11 @@
 [
     {
-        "name": "Arbitrum",
-        "logo": "/supported-chains/Arbitrum.svg"
-    },
-    {
-        "name": "BASE",
-        "logo": "/supported-chains/BASE.svg"
-    },
-    {
-        "name": "Celo",
-        "logo": "/supported-chains/Celo.svg"
-    },
-    {
         "name": "Polygon",
         "logo": "/supported-chains/Polygon.svg"
     },
     {
-        "name": "Zkscroll",
-        "logo": "/supported-chains/Zkscroll.svg"
-    },
-    {
         "name": "The Graph",
         "logo": "/supported-chains/Graph.svg"
-    },
-    {
-        "name": "Filecoin",
-        "logo": "/supported-chains/Filecoin.svg"
     },
     {
         "name": "Lighthouse",

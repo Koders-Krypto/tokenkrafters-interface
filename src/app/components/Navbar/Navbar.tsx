@@ -18,10 +18,7 @@ const Navbar = () => {
       name: "Buckets",
       link: "/app",
     },
-    {
-      name: "Raffle",
-      link: "/app/raffle",
-    },
+
     {
       name: "Portfolio",
       link: "/app/portfolio",
