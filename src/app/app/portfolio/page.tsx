@@ -1,13 +1,8 @@
 "use client";
 import PieChartGraph from "@/app/components/Chart/PieChartGraph";
 import { getPortfolio } from "@/app/components/utils/subgraph/graph";
-import truncate from "@/app/components/utils/truncate";
 import { getActiveToken } from "@/app/components/utils/utils";
-import {
-  BriefcaseIcon,
-  TicketIcon,
-  TrophyIcon,
-} from "@heroicons/react/24/solid";
+import { BriefcaseIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { formatUnits } from "viem";
 import { useAccount, useNetwork } from "wagmi";
